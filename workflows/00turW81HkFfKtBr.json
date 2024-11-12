@@ -1,0 +1,411 @@
+{
+  "id": "00turW81HkFfKtBr",
+  "name": "get notices from gazette",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "e48af487-cc82-4344-bee4-23484520bb4c",
+      "name": "When clicking ‘Test workflow’",
+      "type": "n8n-nodes-base.manualTrigger",
+      "position": [
+        560,
+        -440
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {},
+      "id": "70a3bd1c-1387-4fea-9793-f2d8f44a9536",
+      "name": "Window Buffer Memory",
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.2,
+      "position": [
+        920,
+        560
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.firecrawl.dev/v1/scrape",
+        "sendHeaders": true,
+        "parametersHeaders": {
+          "values": [
+            {
+              "name": "Content-Type",
+              "valueProvider": "fieldValue",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "valueProvider": "fieldValue",
+              "value": "Bearer fc-309436744e43432caad2e87dd9c12e48"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n      \"url\": {{ $json.name }},\n      \"formats\" : [\"markdown\", \"html\"]\n    } "
+      },
+      "id": "20da374a-a92c-400f-98cc-fad526c87b3f",
+      "name": "HTTP Request",
+      "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
+      "typeVersion": 1.1,
+      "position": [
+        1100,
+        540
+      ]
+    },
+    {
+      "parameters": {
+        "model": "phi3:mini",
+        "options": {}
+      },
+      "id": "928b8eea-cb9b-41b1-a09a-353580ee9cd2",
+      "name": "Ollama Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        740,
+        560
+      ],
+      "credentials": {
+        "ollamaApi": {
+          "id": "yIPq1jZh02RP5HCm",
+          "name": "Ollama account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "options": {}
+      },
+      "id": "4b950d25-b9a7-46d8-99bf-4b4374cef72d",
+      "name": "AI Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        840,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.firecrawl.dev/v1/scrape",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer fc-309436744e43432caad2e87dd9c12e48"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"url\": \"{{ $json.name }}\",\n  \"formats\": [\n    \"markdown\",\n    \"html\"\n  ]\n} ",
+        "options": {}
+      },
+      "id": "88aa1f73-c8e8-45f1-a349-483cb75574b2",
+      "name": "HTTP Request1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        860,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "301c98c1-01a4-469d-9917-fe08ea213d82",
+              "name": "data.html",
+              "value": "={{ $json.data.html }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "c4c693b4-609c-425a-9086-fc27ef8ec009",
+      "name": "Edit Fields",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1100,
+        100
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "62e86dcb-f29e-4fab-beca-d2c8c7687598",
+      "name": "Structured Output Parser",
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        1440,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "create a ",
+        "hasOutputParser": true
+      },
+      "id": "44a411a5-8b5f-423d-8fd3-12bfce26c752",
+      "name": "Basic LLM Chain",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.4,
+      "position": [
+        1340,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "url": "=https://www.thegazette.co.uk/notice/{{ $json.noticeId }}/data.jsonld",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "id": "a570877d-2784-4610-95ef-95dfad7073a3",
+      "name": "HTTP Request2",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        760,
+        -440
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "fromJson",
+        "options": {}
+      },
+      "id": "49884e02-7a49-434b-a527-082deaeecf6e",
+      "name": "Extract from File",
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        960,
+        -440
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "6190ab8b-19a9-4670-8c66-d1c3e376d5fb",
+      "name": "Default Data Loader",
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1,
+      "position": [
+        1320,
+        -260
+      ]
+    },
+    {
+      "parameters": {
+        "model": "mxbai-embed-large:latest"
+      },
+      "id": "10b04c1b-4ed1-41dd-96d1-0a36f81fcea7",
+      "name": "Embeddings Ollama",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOllama",
+      "typeVersion": 1,
+      "position": [
+        1120,
+        -260
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "c4012e65-049c-4adc-82dd-947ff311f473",
+      "name": "Recursive Character Text Splitter",
+      "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
+      "typeVersion": 1,
+      "position": [
+        1220,
+        -120
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "qdrantCollection": {
+          "__rl": true,
+          "value": "test_collection3",
+          "mode": "list",
+          "cachedResultName": "test_collection3"
+        },
+        "options": {}
+      },
+      "id": "e605cb10-ceb2-4efa-8724-31b7fc2b3423",
+      "name": "Qdrant Vector Store1",
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreQdrant",
+      "typeVersion": 1,
+      "position": [
+        1220,
+        -440
+      ]
+    }
+  ],
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Window Buffer Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ollama Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request2": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Qdrant Vector Store1",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings Ollama": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Qdrant Vector Store1",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "Qdrant Vector Store1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Recursive Character Text Splitter": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Default Data Loader",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "triggerCount": 0,
+  "versionId": "6fa70755-3b1e-4755-9d91-9886503fca42",
+  "owner": {
+    "type": "personal",
+    "personalEmail": "mandip@n8n.io"
+  }
+}

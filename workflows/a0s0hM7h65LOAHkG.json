@@ -1,0 +1,102 @@
+{
+  "id": "a0s0hM7h65LOAHkG",
+  "name": "kafka avro curl requests",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "b60f78cc-bc44-45f2-bf3e-f69793bfc666",
+      "name": "When clicking ‘Test workflow’",
+      "type": "n8n-nodes-base.manualTrigger",
+      "position": [
+        360,
+        1000
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8081/subjects/test-topic/versions",
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/vnd.schemaregistry.v1+json",
+        "body": "{\"schemaType\": \"AVRO\", \"schema\": \"{\\\"type\\\": \\\"record\\\",\\\"name\\\": \\\"test\\\",\\\"fields\\\":[{\\\"name\\\": \\\"field1\\\",\\\"type\\\": \\\"string\\\"}]}\"}",
+        "options": {}
+      },
+      "id": "938ae7a1-d692-47ee-b0ed-82bd6aa5ab37",
+      "name": "HTTP Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        820,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "content": "Use the following curl command to register the schema\n",
+        "height": 315,
+        "width": 279
+      },
+      "id": "c83fdc1b-16b0-4498-849b-e747fd9cb276",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        780,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "content": "Verify the Registered Schema\nFirst, let's verify that the schema was correctly registered:\nbash\ncurl -X GET http://localhost:8081/subjects/test-value/versions/1\n\nThis should return the schema you just registered.\n\n\n\n\n\n\n\nid\nschema\nsubject\nversion\n1\t{\"fields\":[{\"name\":\"field1\",\"type\":\"string\"}],\"name\":\"test\",\"type\":\"record\"}\ttest-value\t1",
+        "height": 457,
+        "width": 477
+      },
+      "id": "c29fe80a-5037-4524-8da6-8e76915cd9f6",
+      "name": "Sticky Note1",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        560,
+        640
+      ]
+    },
+    {
+      "parameters": {
+        "url": "http://localhost:8081/subjects/test-topic/versions/1",
+        "options": {}
+      },
+      "id": "4fcce374-da4c-44e0-bf25-185b222d56f8",
+      "name": "HTTP Request1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        760,
+        780
+      ]
+    }
+  ],
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "triggerCount": 0,
+  "versionId": "79ef062a-6883-4db4-9ae7-523c9ee7837e",
+  "owner": {
+    "type": "personal",
+    "personalEmail": "mandip@n8n.io"
+  }
+}

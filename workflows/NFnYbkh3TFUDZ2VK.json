@@ -1,0 +1,81 @@
+{
+  "id": "NFnYbkh3TFUDZ2VK",
+  "name": "read csv",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "82ad546b-4c9b-4533-8982-da359e9c66ed",
+      "name": "When clicking ‘Test workflow’",
+      "type": "n8n-nodes-base.manualTrigger",
+      "position": [
+        720,
+        320
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "fileSelector": "/Users/mandip/Documents/ringcentral.com/Data - redacted_all_data.csv",
+        "options": {}
+      },
+      "id": "596b9151-4aeb-4a2a-a9e4-24f7b5b82cd4",
+      "name": "Read/Write Files from Disk",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        940,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "options": {
+          "headerRow": true,
+          "maxRowCount": 10
+        }
+      },
+      "id": "f5d2d7c7-7cfe-425b-ae69-aa448a8c9ba0",
+      "name": "Extract from File",
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        1160,
+        320
+      ]
+    }
+  ],
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read/Write Files from Disk": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "triggerCount": 0,
+  "versionId": "c5fa5516-426e-4785-9b2a-296cddf968fe",
+  "owner": {
+    "type": "team",
+    "teamId": "7KQPZmuLDnKgOrJQ",
+    "teamName": "DEMO"
+  }
+}

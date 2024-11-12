@@ -1,0 +1,14 @@
+{
+  "id": "ArE6JwMT3DiFtcLg",
+  "name": "n8n account 2",
+  "type": "n8nApi",
+  "data": {
+    "apiKey": "",
+    "baseUrl": ""
+  },
+  "ownedBy": {
+    "type": "team",
+    "teamId": "G3rut5oL2k2FrEff",
+    "teamName": "🏝️sandbox"
+  }
+}

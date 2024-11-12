@@ -1,0 +1,67 @@
+{
+  "id": "reTqIX2Z0KHhgRNb",
+  "name": "smoke test - cost of this api",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "496e53e3-9827-43e9-93c8-146f2a1da883",
+      "name": "When clicking ‘Test workflow’",
+      "type": "n8n-nodes-base.manualTrigger",
+      "position": [
+        720,
+        320
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.perplexity.ai/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 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"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"model\": \"llama-3.1-sonar-small-128k-online\",\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"what is the cost of running this perplexity api call test?\"\n    }\n  ]\n}",
+        "options": {}
+      },
+      "id": "5df765f4-dee2-42ac-b124-de8118515148",
+      "name": "HTTP Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        940,
+        320
+      ]
+    }
+  ],
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "triggerCount": 0,
+  "versionId": "ce52e9ee-680c-43a1-a6a6-23319288f5c0",
+  "owner": {
+    "type": "team",
+    "teamId": "LIGp9ml9heTyKmkT",
+    "teamName": "Ai (perplexity api)"
+  }
+}

@@ -1,0 +1,82 @@
+{
+  "id": "kIcuBOlNVbkYdksC",
+  "name": "asset-search",
+  "nodes": [
+    {
+      "parameters": {
+        "category": "randomData"
+      },
+      "id": "509f5e2e-5faf-48f1-8d7f-184281280973",
+      "name": "DebugHelper",
+      "type": "n8n-nodes-base.debugHelper",
+      "typeVersion": 1,
+      "position": [
+        880,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {}
+      },
+      "id": "73d706d7-e2db-4c70-876e-42cc9da5fb0e",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1100,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "path": "asset-search",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "2264207e-f5cf-46c4-8ed1-59374cb24529",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        600,
+        400
+      ],
+      "webhookId": "e08e22a6-888d-4b30-8ecf-bedb431ba8a3"
+    }
+  ],
+  "connections": {
+    "DebugHelper": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "DebugHelper",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "triggerCount": 1,
+  "versionId": "528930cd-ae1f-41ee-99a2-15db4b75d13e",
+  "owner": {
+    "type": "personal",
+    "personalEmail": "mandip@n8n.io"
+  }
+}

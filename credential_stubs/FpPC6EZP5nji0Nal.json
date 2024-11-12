@@ -1,0 +1,14 @@
+{
+  "id": "FpPC6EZP5nji0Nal",
+  "name": "QdrantApi account",
+  "type": "qdrantApi",
+  "data": {
+    "apiKey": "",
+    "qdrantUrl": ""
+  },
+  "ownedBy": {
+    "type": "team",
+    "teamId": "Cu4hotK7yZkWyMWd",
+    "teamName": "RFX"
+  }
+}

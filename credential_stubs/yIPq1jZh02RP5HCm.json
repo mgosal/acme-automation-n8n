@@ -1,0 +1,12 @@
+{
+  "id": "yIPq1jZh02RP5HCm",
+  "name": "Ollama account 3",
+  "type": "ollamaApi",
+  "data": {
+    "baseUrl": ""
+  },
+  "ownedBy": {
+    "type": "personal",
+    "personalEmail": "mandip@n8n.io"
+  }
+}

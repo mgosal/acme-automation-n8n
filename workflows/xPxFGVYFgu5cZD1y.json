@@ -1,0 +1,1495 @@
+{
+  "id": "xPxFGVYFgu5cZD1y",
+  "name": "endpoint",
+  "nodes": [
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Set domain and callback URL').first().json.callbackUrl }}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json.response }}",
+        "options": {}
+      },
+      "id": "05a851ec-8f74-4617-a6a5-b19f8afbebee",
+      "name": "Send cached response",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2060,
+        860
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "83022a71-1490-42db-b515-8a6ca06635f0",
+              "leftValue": "={{ $json }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "ddcde065-4f24-46c6-8d5a-42be0c3e7fd0",
+      "name": "Query already in cache?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.1,
+      "position": [
+        1580,
+        1000
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.firecrawl.dev/v1/scrape",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"url\": \"{{ $json.url }}\",\n  \"formats\": [\n    \"markdown\",\n    \"html\"\n  ]\n}",
+        "options": {}
+      },
+      "id": "f74bc1f9-bd7e-4b97-aaf2-86f21cc31d7b",
+      "name": "Firecrawl",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2880,
+        1740
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "name": "text_retrieval_tool",
+        "description": "=Call this tool to return all text from the website on domain {{ $json.domain }}. Query must be full website URL on domain {{ $json.domain }}. Do not use is for any other websites/URLs.",
+        "workflowId": "vrUc3NHkW6OSpBSR"
+      },
+      "id": "feb18160-cefa-4acc-ae4a-6efb3ca4d03e",
+      "name": "Text",
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 1.1,
+      "position": [
+        4420,
+        820
+      ]
+    },
+    {
+      "parameters": {
+        "name": "url_retrieval_tool",
+        "description": "=Call this tool to return all URLs from the website on domain {{ $json.domain }}. Query must be full website URL on domain {{ $json.domain }}. Do not use is for any other websites/URLs.",
+        "workflowId": "ZgsCbadBUTLfYre7"
+      },
+      "id": "73a4a2a4-de62-4104-9288-e3ea5826eb58",
+      "name": "URLs",
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 1.1,
+      "position": [
+        4600,
+        820
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": []
+        },
+        "includeOtherFields": true,
+        "include": "selected",
+        "includeFields": "domain",
+        "options": {}
+      },
+      "id": "247cd841-dedc-46bc-955f-c78b2d336e2e",
+      "name": "Select company name and website",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [
+        4160,
+        560
+      ]
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 166.55000000000004,
+        "width": 157.8125,
+        "color": 5
+      },
+      "id": "0fd44c49-0924-4a50-94e5-ffcb3a083293",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        4560,
+        780
+      ]
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 166.55000000000004,
+        "width": 157.8125,
+        "color": 4
+      },
+      "id": "8a2161bd-d6ca-4345-ab90-2f028a46757e",
+      "name": "Sticky Note1",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        4380,
+        780
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://api.search.brave.com/res/v1/web/search",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "q",
+              "value": "=@{{ $json.domain }}"
+            },
+            {
+              "name": "text_decorations",
+              "value": "0"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/json"
+            },
+            {
+              "name": "Accept-Encoding",
+              "value": "gzip"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "86cbd277-4630-448b-b0fa-3efe2e1a13a6",
+      "name": "Search websites (Brave Search API)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2260,
+        1460
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### Perform search\nSearch for websites that potentially include the emails addresses connected with a domain.\n\nSimple query e.g. `@domain.com`.",
+        "height": 376.44500260190864,
+        "width": 229.08680659150048
+      },
+      "id": "56146e6c-620f-439f-ae2f-26935d14a054",
+      "name": "Sticky Note2",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        2200,
+        1280
+      ]
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "web.results",
+        "options": {}
+      },
+      "id": "8911ac63-1650-4c0d-87e2-2e5aa094c538",
+      "name": "Split out search results",
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        2540,
+        1460
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### Scrape website\nPerform scraping of websites found using Firecrawl. \n\n⚠️ Returns both HTML and Markdown content.",
+        "height": 346.6042393755424,
+        "width": 229.08680659150048
+      },
+      "id": "0a4d3a5a-dfeb-463e-8380-824d4d3824fa",
+      "name": "Sticky Note3",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        2820,
+        1560
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "id": "0841e4b7-37d3-4def-b745-9a49f3342927",
+      "name": "Merge scrape and search results",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        3180,
+        1360
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "27a8336d-a692-41e6-a89d-e0558b76ddbb",
+              "leftValue": "={{ $json.error }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "notExists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "80ea5456-bb35-40c7-b213-0754a6690625",
+      "name": "Filter out error results",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.1,
+      "position": [
+        3420,
+        1360
+      ],
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "data.html",
+        "options": {
+          "destinationFieldName": "html"
+        }
+      },
+      "id": "4fde40f6-09ca-49cb-98e1-2073b8bda00b",
+      "name": "Split out HTML contents",
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        4180,
+        1920
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### Non-AI path\nReturn email addresses from HTML content using JavaScript. ",
+        "height": 306.36183868170014,
+        "width": 504.30390286209877,
+        "color": 7
+      },
+      "id": "0431c57b-6b7d-4cda-991d-ff31e353f4db",
+      "name": "Sticky Note4",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        4100,
+        1800
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### Empty results\nSend empty results response.",
+        "height": 296.86963399826556,
+        "width": 229.08680659150048,
+        "color": 3
+      },
+      "id": "cc640aed-9ac0-4d52-9817-e345b438027c",
+      "name": "Sticky Note5",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        4100,
+        2120
+      ]
+    },
+    {
+      "parameters": {
+        "includeOtherFields": true,
+        "include": "selected",
+        "includeFields": "description,data.markdown",
+        "options": {}
+      },
+      "id": "4cee8126-6e79-4cbb-b4d9-ec469712cca5",
+      "name": "Set descriptions and markdown content",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        4180,
+        1460
+      ]
+    },
+    {
+      "parameters": {
+        "model": "gpt-4o-mini",
+        "options": {}
+      },
+      "id": "ccf6ef64-afbc-4ec8-8289-52357a8ff33f",
+      "name": "OpenAI Chat",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        4540,
+        1640
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### ✨ AI path (extrctor)\nReturn email addresses from Markdown content using AI. ",
+        "height": 427.14588031222956,
+        "width": 855.288117953166,
+        "color": 7
+      },
+      "id": "d7b97b07-2f98-49b2-b083-e3cf92610ad7",
+      "name": "Sticky Note6",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        4100,
+        1360
+      ]
+    },
+    {
+      "parameters": {
+        "text": "=Description: {{ $json.description ? $json.description : null }}\nContent: {{ $json.markdown ? $json.markdown : null }}",
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n  \"type\": \"object\",\n  \"properties\": {\n    \"emails\": {\n      \"type\": [\"array\", \"null\"],\n      \"items\": {\n        \"type\": \"string\",\n        \"format\": \"email\"\n      },\n      \"description\": \"List of email addresses or null if not available\"\n    }\n  },\n  \"required\": [\"emails\"]\n}",
+        "options": {
+          "systemPromptTemplate": "You are an expert extraction algorithm. Extract only the relevant email addresses from the text, including non-obvious formats like example[@]domain.com or example[at]domain.com. If no email addresses can be extracted or an email address is incomplete, omit the email address. Only extract valid, fully-formed email addresses. If you cannot extract any email address, return an empty result. Return email addresses in format: example@domain.com."
+        }
+      },
+      "id": "86d3208f-dac1-4dd2-8aa0-a44f1e821368",
+      "name": "Email address extractor",
+      "type": "@n8n/n8n-nodes-langchain.informationExtractor",
+      "typeVersion": 1,
+      "position": [
+        4420,
+        1460
+      ],
+      "alwaysOutputData": false,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "keys": {
+          "key": [
+            {
+              "currentKey": "output",
+              "newKey": "markdown"
+            }
+          ]
+        },
+        "additionalOptions": {}
+      },
+      "id": "e36de1a4-f77e-4cc1-8fad-ff4a42810657",
+      "name": "Rename output key",
+      "type": "n8n-nodes-base.renameKeys",
+      "typeVersion": 1,
+      "position": [
+        4780,
+        1460
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### Scrape website\nPerform scraping of websites found using Firecrawl. \n\n⚠️ Returns both HTML and Markdown content.",
+        "height": 346.6042393755424,
+        "width": 229.08680659150048
+      },
+      "id": "7d1bdcd5-41dc-424f-bef7-f6481e8cd609",
+      "name": "Sticky Note7",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        4100,
+        1000
+      ]
+    },
+    {
+      "parameters": {
+        "includeOtherFields": true,
+        "include": "selected",
+        "includeFields": "url",
+        "options": {}
+      },
+      "id": "e13bd9e5-0e5b-4e89-bc9c-702dcf1af4d6",
+      "name": "Set URLs",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        4160,
+        1180
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// The input item in n8n\nconst input = $input.item.json;\n\n// Function to combine emails from markdown and html\nconst combineEmails = (item) => {\n  const markdownEmails = item.markdown.emails || [];\n  const htmlEmails = item.html.emails || [];\n\n  // Combine unique emails from both markdown and html\n  const combinedEmails = [...new Set([...markdownEmails, ...htmlEmails])];\n\n  // Add a new field with the combined emails\n  item.combinedEmails = combinedEmails;\n\n  // Return the modified item\n  return item;\n};\n\n// Call the function and return the modified input\nreturn combineEmails(input);"
+      },
+      "id": "02973d36-31c2-4c8f-89e5-d7dc58ebf008",
+      "name": "Combine all emails",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        5420,
+        1460
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": []
+        },
+        "includeOtherFields": true,
+        "include": "selected",
+        "includeFields": "url,combinedEmails",
+        "options": {}
+      },
+      "id": "4b203e2f-5680-4a5b-91f7-79b6b05ce735",
+      "name": "Set only URLs and array of emails",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        5640,
+        1460
+      ]
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "combinedEmails",
+        "include": "allOtherFields",
+        "options": {}
+      },
+      "id": "3ac3ca89-5a28-4165-a477-58b7dba87cb6",
+      "name": "Split out combined results",
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        5860,
+        1460
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "bbe7bb50-79aa-4888-9b6b-4f752110f060",
+              "leftValue": "={{ $json.combinedEmails }}",
+              "rightValue": "={{ $('Set domain and callback URL').item.json.domain }}",
+              "operator": {
+                "type": "string",
+                "operation": "endsWith"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "909c9f3f-07bb-4558-ab1f-eca3d2c53001",
+      "name": "Filter out irrelevant email addresses",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.1,
+      "position": [
+        6320,
+        1200
+      ],
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "5c662f9a-4bc0-4774-a7b3-d929111f0368",
+              "leftValue": "={{ $json }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "b3c3f6b6-9e82-4535-8cba-ef06e486bdb7",
+      "name": "Check if input not empty (error results)",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.1,
+      "position": [
+        3660,
+        1360
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "5c662f9a-4bc0-4774-a7b3-d929111f0368",
+              "leftValue": "={{ $json }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "49b8abb3-a5c0-4575-bb7a-86b6bc5fa4be",
+      "name": "Check if input not empty (final results)",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.1,
+      "position": [
+        6540,
+        1200
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $input.all();\n\n// Function to organize emails by websites\nconst groupEmailsByWebsites = (input) => {\n  const emailMap = {};\n\n  // Loop through input items\n  input.forEach(item => {\n    const email = item.json.combinedEmails; // Access the email from the item\n    const url = item.json.url; // Access the URL from the item\n\n    // If the email is already in the map, work with its websites set\n    if (emailMap[email]) {\n      emailMap[email].websites.add(url);\n    } else {\n      // Otherwise, initialize a new entry with a Set for unique websites\n      emailMap[email] = {\n        email: email,\n        websites: new Set([url])\n      };\n    }\n  });\n\n  // Convert the map back to an array and websites Set to array\n  return Object.values(emailMap).map(item => ({\n    email: item.email,\n    websites: Array.from(item.websites)\n  }));\n};\n\nconst result = groupEmailsByWebsites(input);\n\nreturn result;"
+      },
+      "id": "3fe02f23-3a37-46ca-ab73-cf0bef430c73",
+      "name": "Compose output format",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        6800,
+        1040
+      ]
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "[{\"email\":\"example@domain.com\",\"url\":\"https://domain.com/contact\"},{\"email\":\"otherexample@otherdomain.com\",\"url\":\"https://otherdomain.com/team\"}]"
+      },
+      "id": "b1c7902c-eb6d-4319-a86a-37e1aa450765",
+      "name": "JSON Parser",
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        4780,
+        820
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// 1. Take input text\nlet str = $input.item.json.html;\n\n// 2. Grab domain name\nlet toProcess = $('Set domain and callback URL').item.json.domain;\n\n// 3. Replace dots and dashes into RegExp-friendly format\nlet transformDots = toProcess.replaceAll('.', '+\\\\.');\nlet transformDashes = transformDots.replaceAll('-', '+\\\\-');\n\n// 4. Create RegExp formats with injected domain\nlet regularFormat = '([a-zA-Z0-9._-]+@' + transformDashes + ')';\nlet atSquareBrackets = '([a-zA-Z0-9._-]+\\\\[at\\\\]' + transformDashes + ')';\nlet atSquareBracketsWithSpaces = '([a-zA-Z0-9._-]+\\\\s\\\\[at\\\\]\\\\s' + transformDashes + ')';\n\n// 5. Combine all formats with conditional expression (OR = '|')\nlet combined = new RegExp(regularFormat + '|' + atSquareBrackets + '|' + atSquareBracketsWithSpaces, 'gm');\n\n// 6. Find RegExp results in input text\nlet found = Array.from(str.matchAll(combined)).flat().filter(n => n);\nlet uniqueValues = [...new Set(found)];\n\n// Return the array of unique emails inside the \"output\" key\nreturn {\n  json: {\n    html: {\n      emails: uniqueValues\n    }\n  }\n};"
+      },
+      "id": "6ed268d9-c1cb-4525-97b0-eef59ad824be",
+      "name": "Retrieve email addresses (JS)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4420,
+        1920
+      ]
+    },
+    {
+      "parameters": {
+        "model": "gpt-4o",
+        "options": {
+          "responseFormat": "json_object",
+          "temperature": 0
+        }
+      },
+      "id": "387e16d8-df54-4adc-b61e-62331ad1ddba",
+      "name": "OpenAI Chat1",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        4260,
+        820
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "numberInputs": 3,
+        "options": {}
+      },
+      "id": "20945e01-5150-469e-adc8-7b22aa78cdc2",
+      "name": "Merge all results",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        5200,
+        1460
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "c1bae80d-d951-4cc3-8667-10088b988f2e",
+      "name": "Merge",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        6120,
+        1200
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### ✨ AI path (agent)\nReturn email addresses from website content using AI agent. ",
+        "height": 519.518295110083,
+        "width": 1014.2545992331927,
+        "color": 7
+      },
+      "id": "9a74b143-ab15-4272-b733-e4f215d86540",
+      "name": "Sticky Note8",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        4100,
+        460
+      ]
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "output",
+        "options": {}
+      },
+      "id": "71a32bc8-5e82-4e12-aea9-611b075d9070",
+      "name": "Split out output",
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        4740,
+        560
+      ]
+    },
+    {
+      "parameters": {
+        "keys": {
+          "key": [
+            {
+              "currentKey": "email",
+              "newKey": "combinedEmails"
+            }
+          ]
+        },
+        "additionalOptions": {}
+      },
+      "id": "e60044bd-bce2-4a72-bffa-e6aad9985592",
+      "name": "Rename email key",
+      "type": "n8n-nodes-base.renameKeys",
+      "typeVersion": 1,
+      "position": [
+        4960,
+        560
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### Empty results\nSend empty results response.",
+        "height": 296.86963399826556,
+        "width": 239.47346337198823,
+        "color": 3
+      },
+      "id": "0c108cac-7825-4478-9c22-0494c2ec09ac",
+      "name": "Sticky Note9",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        6769.613343219512,
+        1340
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": []
+        },
+        "includeOtherFields": true,
+        "include": "selected",
+        "includeFields": "body.domain,body.callbackUrl",
+        "options": {}
+      },
+      "id": "735447bb-f89f-490c-8a4a-b053d70145b1",
+      "name": "Set domain and callback URL",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        940,
+        1000
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Set domain and callback URL').first().json.callbackUrl }}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"status\": \"success\",\n  \"domain\": {{ JSON.stringify($('Set domain and callback URL').first().json.domain) }},\n  \"emails\": {{ $json.emails.toJsonString() }},\n  \"timestamp\": {{ JSON.stringify($now.toString()) }}\n}",
+        "options": {}
+      },
+      "id": "95f46393-9228-4be4-a70e-32c1dd889d50",
+      "name": "Send response",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        7240,
+        1040
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Set domain and callback URL').first().json.callbackUrl }}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"status\": \"success\",\n  \"domain\": {{ JSON.stringify($('Set domain and callback URL').first().json.domain) }},\n  \"emails\": [],\n  \"timestamp\": {{ JSON.stringify($now.toString()) }}\n}",
+        "options": {}
+      },
+      "id": "166c5e59-8f3b-40df-b50e-a7e54a427f7a",
+      "name": "No results (error)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        4160,
+        2240
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Set domain and callback URL').first().json.callbackUrl }}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"status\": \"success\",\n  \"domain\": {{ JSON.stringify($('Set domain and callback URL').first().json.domain) }},\n  \"emails\": [],\n  \"timestamp\": {{ JSON.stringify($now.toString()) }}\n}",
+        "options": {}
+      },
+      "id": "fff197a1-e960-42c2-bbc7-81de9c24a5a4",
+      "name": "No results (no results)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        6840,
+        1460
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "emailspy_cache_prod",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "domain",
+              "keyValue": "={{ $json.domain }}"
+            }
+          ]
+        }
+      },
+      "id": "8142e893-d640-49ef-af27-a70b08a6c6f9",
+      "name": "Check cache for domain",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1140,
+        1000
+      ],
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "2062a936-2d46-449a-837b-afd09ff9922c",
+              "name": "domain",
+              "value": "={{ $('Set domain and callback URL').item.json.domain }}",
+              "type": "string"
+            },
+            {
+              "id": "2540adba-22be-484d-a4f2-ccc7a181b164",
+              "name": "callbackUrl",
+              "value": "={{ $('Set domain and callback URL').item.json.callbackUrl }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "f3bffde1-01d7-46ae-997e-6ba1520d532e",
+      "name": "Reset input schema",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1780,
+        1240
+      ]
+    },
+    {
+      "parameters": {
+        "tableId": "emailspy_cache_prod",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "domain",
+              "fieldValue": "={{ $('Set domain and callback URL').first().json.domain }}"
+            },
+            {
+              "fieldId": "response",
+              "fieldValue": "={\n  \"status\": \"success\",\n  \"domain\": {{ JSON.stringify($('Set domain and callback URL').first().json.domain) }},\n  \"emails\": {{ $('AI Transform').first().json.emails.toJsonString() }},\n  \"timestamp\": {{ JSON.stringify($now.toString()) }}\n}"
+            }
+          ]
+        }
+      },
+      "id": "2b299236-482d-4460-b39a-0b613600f023",
+      "name": "Add response to cache",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        7460,
+        1040
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "e7e83777-a58f-4e97-9c91-c40c6896033f",
+      "name": "Limit",
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        1360,
+        1000
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Retrieve email addresses from this website: {{ $json.domain }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=You are an automated web crawler tasked with extracting email addresses from a webpage provided by the user. You have access to a text retrieval tool to gather all text content from the page and a URL retrieval tool to identify and navigate through links on the page. You can use those tools ONLY for websites on domain {{ $json.domain }}. Utilize the URLs retrieved to crawl additional pages. Your objective is to provide a unified JSON output containing the extracted data (all possible email addresses from the website) and website URL where specific email address was found. Always search for sites with possible contact details (\"Contact\", \"About us\", \"Team\" etc.). If you cannot find such sub-page, do not scrape more websites. Make sure email addresses and URLs in output are valid.",
+          "maxIterations": 5
+        }
+      },
+      "id": "2102299d-8a2c-461c-a253-ab8d1e52b4f9",
+      "name": "Retrieve email addresses (AI)",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.6,
+      "position": [
+        4360,
+        560
+      ],
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst emails = items.map((item) => item.json);\nreturn [{ emails }];\n"
+      },
+      "id": "29207ef5-43c7-4482-844d-3750ce8865cb",
+      "name": "Tweak output",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        7020,
+        1040
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### Has result\nSend back response with email(s).",
+        "height": 313.0266556568023,
+        "width": 630.7042021036962,
+        "color": 4
+      },
+      "id": "48927f8a-27cc-4af1-a6fc-4baae1a31bc9",
+      "name": "Sticky Note10",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        6762.606342243901,
+        900
+      ]
+    },
+    {
+      "parameters": {
+        "content": "# EmailSpy backend workflow\nThis workflow acts as an API endpoint that various front-ends can consume\n\n\nMade by [Oskar Kramarz](https://www.producthunt.com/@oskarkramarz) and [Max Tkacz](https://www.linkedin.com/in/maxtkacz) during the [30 Day AI Sprint](https://30dayaisprint.notion.site/).",
+        "height": 151.92148917073166,
+        "width": 593.1463305365857,
+        "color": 6
+      },
+      "id": "b575502a-e60f-4866-acc8-96d1170e97ef",
+      "name": "Sticky Note11",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        680,
+        360
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## API Docs\nMake a post request to the Webhook URL in this workflow. Don't forget to activate your workflow first.\n\n**Request body**\n```\n{\n  \"domain\": \"example.com\"\n}\n```\n\n**Response**\n```\n{\n  \"domain\": \"example.com\",\n  \"emails\": [\n    \"john@example.com\",\n    \"jane@example.com\"\n  ]\n}\n```",
+        "height": 373.5035004878047,
+        "width": 315.01474341463313,
+        "color": 7
+      },
+      "id": "3b2056a6-50ec-4ba2-a862-a4b145c6b62a",
+      "name": "Sticky Note12",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        960,
+        540
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "/find-emails",
+        "options": {}
+      },
+      "id": "522f49a2-b345-4bc8-b59b-acc4e5e7d7a8",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        740,
+        1000
+      ],
+      "webhookId": "6e864651-54a7-41c2-adc0-66d28e393802"
+    },
+    {
+      "parameters": {
+        "content": "## Workflow set up\n\n1. Open each node with an error and add a credential.\n\n### Work in progress\n",
+        "height": 373.5035004878047,
+        "width": 257.31109463414515,
+        "color": 7
+      },
+      "id": "67831f30-73a3-4c49-a756-81f228e97b29",
+      "name": "Sticky Note13",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        680,
+        540
+      ]
+    }
+  ],
+  "connections": {
+    "Query already in cache?": {
+      "main": [
+        [
+          {
+            "node": "Send cached response",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Reset input schema",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Firecrawl": {
+      "main": [
+        [
+          {
+            "node": "Merge scrape and search results",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Text": {
+      "ai_tool": [
+        [
+          {
+            "node": "Retrieve email addresses (AI)",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "URLs": {
+      "ai_tool": [
+        [
+          {
+            "node": "Retrieve email addresses (AI)",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Select company name and website": {
+      "main": [
+        [
+          {
+            "node": "Retrieve email addresses (AI)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search websites (Brave Search API)": {
+      "main": [
+        [
+          {
+            "node": "Split out search results",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split out search results": {
+      "main": [
+        [
+          {
+            "node": "Merge scrape and search results",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Firecrawl",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge scrape and search results": {
+      "main": [
+        [
+          {
+            "node": "Filter out error results",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter out error results": {
+      "main": [
+        [
+          {
+            "node": "Check if input not empty (error results)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split out HTML contents": {
+      "main": [
+        [
+          {
+            "node": "Retrieve email addresses (JS)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set descriptions and markdown content": {
+      "main": [
+        [
+          {
+            "node": "Email address extractor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Email address extractor",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Email address extractor": {
+      "main": [
+        [
+          {
+            "node": "Rename output key",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Rename output key": {
+      "main": [
+        [
+          {
+            "node": "Merge all results",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Set URLs": {
+      "main": [
+        [
+          {
+            "node": "Merge all results",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Combine all emails": {
+      "main": [
+        [
+          {
+            "node": "Set only URLs and array of emails",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set only URLs and array of emails": {
+      "main": [
+        [
+          {
+            "node": "Split out combined results",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split out combined results": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Filter out irrelevant email addresses": {
+      "main": [
+        [
+          {
+            "node": "Check if input not empty (final results)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check if input not empty (error results)": {
+      "main": [
+        [
+          {
+            "node": "Split out HTML contents",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Set descriptions and markdown content",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Set URLs",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No results (error)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check if input not empty (final results)": {
+      "main": [
+        [
+          {
+            "node": "Compose output format",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No results (no results)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Compose output format": {
+      "main": [
+        [
+          {
+            "node": "Tweak output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "JSON Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Retrieve email addresses (AI)",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Retrieve email addresses (JS)": {
+      "main": [
+        [
+          {
+            "node": "Merge all results",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Retrieve email addresses (AI)",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge all results": {
+      "main": [
+        [
+          {
+            "node": "Combine all emails",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Filter out irrelevant email addresses",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split out output": {
+      "main": [
+        [
+          {
+            "node": "Rename email key",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Rename email key": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set domain and callback URL": {
+      "main": [
+        [
+          {
+            "node": "Check cache for domain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check cache for domain": {
+      "main": [
+        [
+          {
+            "node": "Limit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reset input schema": {
+      "main": [
+        [
+          {
+            "node": "Search websites (Brave Search API)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Select company name and website",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send response": {
+      "main": [
+        [
+          {
+            "node": "Add response to cache",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit": {
+      "main": [
+        [
+          {
+            "node": "Query already in cache?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Retrieve email addresses (AI)": {
+      "main": [
+        [
+          {
+            "node": "Split out output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tweak output": {
+      "main": [
+        [
+          {
+            "node": "Send response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Set domain and callback URL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "triggerCount": 0,
+  "versionId": "22d19ce6-1bc9-4eb5-b65d-85f8ba650242",
+  "owner": {
+    "type": "team",
+    "teamId": "zaizBC64TVutWBqw",
+    "teamName": "email spy"
+  }
+}

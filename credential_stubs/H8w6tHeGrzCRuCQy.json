@@ -1,0 +1,13 @@
+{
+  "id": "H8w6tHeGrzCRuCQy",
+  "name": "FTP account",
+  "type": "ftp",
+  "data": {
+    "host": ""
+  },
+  "ownedBy": {
+    "type": "team",
+    "teamId": "7KQPZmuLDnKgOrJQ",
+    "teamName": "DEMO"
+  }
+}

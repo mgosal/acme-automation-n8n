@@ -1,0 +1,260 @@
+{
+  "id": "UOz5pckqYQ80tahD",
+  "name": "inbound",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "list",
+        "container": "your-container-name",
+        "options": {
+          "pollingInterval": 300
+        }
+      },
+      "name": "Azure Blob Storage",
+      "type": "n8n-nodes-base.microsoftAzureBlobStorage",
+      "typeVersion": 1,
+      "position": [
+        500,
+        420
+      ],
+      "id": "a0d426f9-458f-4dde-842f-8c094025b7ab"
+    },
+    {
+      "parameters": {
+        "url": "=https://your-api-endpoint.com/check-transformation",
+        "options": {}
+      },
+      "name": "Check Transformation",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        700,
+        420
+      ],
+      "id": "e565f8e8-9fe3-4d19-a759-e9b4225ca533"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{$node[\"Check Transformation\"].json[\"transformation_exists\"]}}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "name": "IF",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        900,
+        420
+      ],
+      "id": "f0854833-bf4b-4816-b066-3cd4251211f1"
+    },
+    {
+      "parameters": {
+        "functionCode": "// Implement your transformation logic here\nconst fileContent = $input.all()[0].json.content;\nconst fileType = $input.all()[0].json.name.split('.').pop();\n\n// Example transformation (replace with your actual logic)\nlet transformedContent;\nif (fileType === 'csv') {\n  transformedContent = fileContent.split('\\n').map(row => row.split(','));\n} else if (fileType === 'xml') {\n  // Add XML transformation logic\n} else {\n  transformedContent = fileContent;\n}\n\nreturn {json: {transformedContent}};"
+      },
+      "name": "Transform File",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        1100,
+        320
+      ],
+      "id": "0b14321f-9729-4bd2-b4ea-cd5159193ff2"
+    },
+    {
+      "parameters": {
+        "topic": "error_messages",
+        "options": {}
+      },
+      "name": "Send Error to Kafka",
+      "type": "n8n-nodes-base.kafka",
+      "typeVersion": 1,
+      "position": [
+        1100,
+        520
+      ],
+      "id": "986b4380-7d94-485c-b827-e5d94c0f62a0"
+    },
+    {
+      "parameters": {
+        "operation": "move",
+        "container": "your-source-container",
+        "destinationContainer": "your-error-container"
+      },
+      "name": "Move Blob",
+      "type": "n8n-nodes-base.microsoftAzureBlobStorage",
+      "typeVersion": 1,
+      "position": [
+        1300,
+        520
+      ],
+      "id": "0e1c2ef3-25ff-43af-9347-5188ee03d271"
+    },
+    {
+      "parameters": {
+        "functionCode": "// Implement your splitting logic here\nconst content = $input.all()[0].json.transformedContent;\n\n// Example splitting logic (replace with your actual logic)\nconst splitContent = content.reduce((acc, row, index) => {\n  const batchIndex = Math.floor(index / 100);\n  if (!acc[batchIndex]) acc[batchIndex] = [];\n  acc[batchIndex].push(row);\n  return acc;\n}, []);\n\nreturn {json: {splitContent}};"
+      },
+      "name": "Split Content",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        1300,
+        320
+      ],
+      "id": "882231f5-dfc0-42f6-b2d0-860cfec13072"
+    },
+    {
+      "parameters": {
+        "url": "https://your-api-endpoint.com/get-unique-ids",
+        "options": {}
+      },
+      "name": "Fetch Unique IDs",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        1500,
+        320
+      ],
+      "id": "d11f7acc-3b9c-4fc4-8d76-b8dcd1ebd4cb"
+    },
+    {
+      "parameters": {
+        "topic": "your-kafka-topic",
+        "options": {}
+      },
+      "name": "Publish to Kafka",
+      "type": "n8n-nodes-base.kafka",
+      "typeVersion": 1,
+      "position": [
+        1700,
+        320
+      ],
+      "id": "117fa2d3-d93f-40dc-8016-090689c82fb2"
+    },
+    {
+      "parameters": {
+        "errorMessage": "=Error processing file {{$node[\"Azure Blob Storage\"].json[\"name\"]}}"
+      },
+      "name": "Stop and Error",
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        1500,
+        520
+      ],
+      "id": "af8cfd8f-5422-4d27-975f-181c46561b4f"
+    },
+    {
+      "parameters": {},
+      "id": "c0d6538c-3721-4e85-b2de-2fb240ae6274",
+      "name": "When clicking ‘Test workflow’",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        340,
+        420
+      ]
+    }
+  ],
+  "connections": {
+    "Azure Blob Storage": {
+      "main": [
+        [
+          {
+            "node": "Check Transformation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Transformation": {
+      "main": [
+        [
+          {
+            "node": "IF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF": {
+      "main": [
+        [
+          {
+            "node": "Transform File",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Error to Kafka",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Transform File": {
+      "main": [
+        [
+          {
+            "node": "Split Content",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Error to Kafka": {
+      "main": [
+        [
+          {
+            "node": "Move Blob",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Content": {
+      "main": [
+        [
+          {
+            "node": "Fetch Unique IDs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Unique IDs": {
+      "main": [
+        [
+          {
+            "node": "Publish to Kafka",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "triggerCount": 0,
+  "versionId": "2fd3f251-591e-41a4-9cd4-d99d10ff453a",
+  "owner": {
+    "type": "team",
+    "teamId": "7KQPZmuLDnKgOrJQ",
+    "teamName": "DEMO"
+  }
+}

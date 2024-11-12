@@ -1,0 +1,168 @@
+{
+  "id": "R3s1apILCu27Z7pQ",
+  "name": "form wait form",
+  "nodes": [
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "817179c2-f5c3-44ee-9397-4324786f6b90",
+              "name": "message",
+              "value": "=",
+              "type": "string"
+            },
+            {
+              "id": "d4f9a6f7-5cfd-415c-9b2b-669fa10dd77c",
+              "name": "submittedAt",
+              "value": "={{ $json.submittedAt }}",
+              "type": "string"
+            },
+            {
+              "id": "da322c00-471f-4dbb-b93e-93351b737817",
+              "name": "resumeUrl",
+              "value": "$execution.resumeFormUrl ",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "65a39db3-f702-41bc-b44f-9c370c00df25",
+      "name": "Edit Fields",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1260,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "resume": "form",
+        "formTitle": "step 2",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "step 2"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "e1f93687-6291-4e25-af59-7c8b1c80e7c3",
+      "name": "Wait",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1480,
+        400
+      ],
+      "webhookId": "8cfa8845-fc2a-4497-96c9-cc4c406d89de"
+    },
+    {
+      "parameters": {},
+      "id": "62b22d2f-da0f-46f1-96ec-9adcc2baf260",
+      "name": "When clicking ‘Test workflow’",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        1020,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "resume": "form",
+        "formTitle": "step3",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "a"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "2671b203-1fcc-496e-9e31-e77d1b01cf53",
+      "name": "Wait1",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1900,
+        400
+      ],
+      "webhookId": "95a57b62-cb07-41dc-a068-f9bcdc971cc7"
+    },
+    {
+      "parameters": {
+        "url": "$execution.resumeFormUrl ",
+        "options": {}
+      },
+      "id": "41c45aa1-12a2-4f3d-a266-abf054bccc11",
+      "name": "HTTP Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1680,
+        400
+      ]
+    }
+  ],
+  "connections": {
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "triggerCount": 0,
+  "versionId": "1bf29b57-2fb6-4855-a346-051a8cc54939",
+  "owner": {
+    "type": "team",
+    "teamId": "7KQPZmuLDnKgOrJQ",
+    "teamName": "DEMO"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "id": "FV6wN9IVvv2o8Yx7",
+  "name": "Sales",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "baad2195-c1fa-46e9-ac91-c115223a8aac",
+      "name": "When clicking ‘Test workflow’",
+      "type": "n8n-nodes-base.manualTrigger",
+      "position": [
+        720,
+        320
+      ],
+      "typeVersion": 1
+    }
+  ],
+  "connections": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "triggerCount": 0,
+  "versionId": "d2ec9014-8664-4910-9168-468f2402c035",
+  "owner": {
+    "type": "team",
+    "teamId": "7KQPZmuLDnKgOrJQ",
+    "teamName": "DEMO"
+  }
+}

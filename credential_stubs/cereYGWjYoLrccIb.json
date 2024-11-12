@@ -1,0 +1,13 @@
+{
+  "id": "cereYGWjYoLrccIb",
+  "name": "S3 account",
+  "type": "s3",
+  "data": {
+    "secretAccessKey": ""
+  },
+  "ownedBy": {
+    "type": "team",
+    "teamId": "7KQPZmuLDnKgOrJQ",
+    "teamName": "DEMO"
+  }
+}

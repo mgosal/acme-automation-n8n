@@ -1,0 +1,14 @@
+{
+  "id": "EVrMH4EStWLbJWly",
+  "name": "OpenAi account",
+  "type": "openAiApi",
+  "data": {
+    "apiKey": "",
+    "organizationId": ""
+  },
+  "ownedBy": {
+    "type": "team",
+    "teamId": "Cu4hotK7yZkWyMWd",
+    "teamName": "RFX"
+  }
+}

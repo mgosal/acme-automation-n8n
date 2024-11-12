@@ -1,0 +1,128 @@
+{
+  "id": "qPnZLkdjCuzlASu7",
+  "name": "error",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "795bcbdb-fd21-461c-8fcb-ed46e7870a54",
+      "name": "Error trigger",
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        620,
+        440
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "execution",
+        "operation": "get",
+        "executionId": "={{ $json.execution.id }}",
+        "options": {
+          "activeWorkflows": true
+        },
+        "requestOptions": {}
+      },
+      "id": "98fc8c92-f2ba-43c5-a0d4-8fea3f16628e",
+      "name": "Get execution data",
+      "type": "n8n-nodes-base.n8n",
+      "typeVersion": 1,
+      "position": [
+        840,
+        440
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a94873b6-b334-4b59-990d-ab91fb932d60",
+              "name": "callbackUrl",
+              "value": "={{ $json.data.resultData.runData.Webhook[0].data.main[0][0].json.body.callbackUrl }}",
+              "type": "string"
+            },
+            {
+              "id": "0f78a1c0-60b1-4b28-a546-977115c04c48",
+              "name": "domain",
+              "value": "={{ $json.data.resultData.runData.Webhook[0].data.main[0][0].json.body.domain }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a99704b2-1747-4fed-86fd-f8e4a1af6325",
+      "name": "Set domain and callback URL",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1060,
+        440
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.callbackUrl }}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"status\": \"error\",\n  \"domain\": {{ JSON.stringify($json.domain) }},\n  \"timestamp\": {{ JSON.stringify($now.toString()) }}\n}",
+        "options": {}
+      },
+      "id": "cfc8f1d6-7f4d-4cdf-8405-5814e5a3a32e",
+      "name": "Send response (error)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1280,
+        440
+      ]
+    }
+  ],
+  "connections": {
+    "Error trigger": {
+      "main": [
+        [
+          {
+            "node": "Get execution data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get execution data": {
+      "main": [
+        [
+          {
+            "node": "Set domain and callback URL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set domain and callback URL": {
+      "main": [
+        [
+          {
+            "node": "Send response (error)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "triggerCount": 0,
+  "versionId": "4b656360-f5b2-46b4-8b55-876546eb1d84",
+  "owner": {
+    "type": "team",
+    "teamId": "zaizBC64TVutWBqw",
+    "teamName": "email spy"
+  }
+}

@@ -1,0 +1,132 @@
+{
+  "id": "eppTrQTjNmvOhpuk",
+  "name": "soap with http node",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "ca8cbeac-a371-4bc0-bbe7-d9df7e34f960",
+      "name": "When clicking ‘Test workflow’",
+      "type": "n8n-nodes-base.manualTrigger",
+      "position": [
+        120,
+        320
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://0.0.0.0:8000/?wsdl",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "text/xml",
+        "body": "=<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:exam=\"http://example.com/soap/\">\n    <soapenv:Header/>\n      <soapenv:Body>\n        <exam:reverse_string>\n          <exam:text>{{ $json.textToReverse }}</exam:text>\n        </exam:reverse_string>\n      </soapenv:Body>\n</soapenv:Envelope>",
+        "options": {
+          "response": {}
+        }
+      },
+      "id": "9afa7295-f680-47c3-a6e8-fe56d463536c",
+      "name": "HTTP Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        540,
+        320
+      ],
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "LtSG0TCr6SXWuaTw",
+          "name": "Unnamed credential"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "35f028aa-ace8-47b7-a81f-7bc315227519",
+      "name": "XML",
+      "type": "n8n-nodes-base.xml",
+      "typeVersion": 1,
+      "position": [
+        740,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "bc775886-d5ea-4d37-9911-22717448c20f",
+              "name": "textToReverse",
+              "value": "={{ $json['soapenv:Envelope']['soapenv:Body']['exam:reverse_string']['exam:text'] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "3c4fc6d2-863a-4a43-8afa-63ef33b1c0bc",
+      "name": "Edit Fields3",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        320,
+        320
+      ]
+    }
+  ],
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "XML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields3": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "XML": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "triggerCount": 0,
+  "versionId": "d72e3ed4-4763-4b8d-b930-3f52c105ed1e",
+  "owner": {
+    "type": "team",
+    "teamId": "7KQPZmuLDnKgOrJQ",
+    "teamName": "DEMO"
+  }
+}

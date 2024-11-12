@@ -1,0 +1,44 @@
+{
+  "id": "kpWzS91TH0X40I7l",
+  "name": "My workflow 5",
+  "nodes": [
+    {
+      "parameters": {
+        "multipleMethods": true,
+        "httpMethod": [
+          "GET",
+          "POST",
+          "DELETE"
+        ],
+        "path": "c61ad977-adf1-49eb-9eb0-d32d79be9376",
+        "authentication": "jwtAuth",
+        "options": {}
+      },
+      "id": "7eeb1500-27f8-4448-b38f-0043e47d8a0c",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        600,
+        400
+      ],
+      "webhookId": "c61ad977-adf1-49eb-9eb0-d32d79be9376",
+      "credentials": {
+        "jwtAuth": {
+          "id": "2Glwu1MtS6PnFXXD",
+          "name": "JWT Auth account"
+        }
+      }
+    }
+  ],
+  "connections": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "triggerCount": 3,
+  "versionId": "5c92c2d4-7108-4ed8-a488-a3391d5b0cc2",
+  "owner": {
+    "type": "personal",
+    "personalEmail": "mandip@n8n.io"
+  }
+}

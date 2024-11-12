@@ -1,0 +1,110 @@
+{
+  "id": "PESVetnBwNJ2i9Pw",
+  "name": "top 10 cities in a state",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "b917e11d-b5ca-45e3-8e3b-9e4bd56dfcc7",
+      "name": "Execute Workflow Trigger",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1,
+      "position": [
+        740,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "model": "phi3:mini",
+        "options": {}
+      },
+      "id": "f7c8ee16-3290-44cd-8d42-9b14a26deb81",
+      "name": "Ollama Model",
+      "type": "@n8n/n8n-nodes-langchain.lmOllama",
+      "typeVersion": 1,
+      "position": [
+        1040,
+        620
+      ],
+      "credentials": {
+        "ollamaApi": {
+          "id": "s3LMboSMY1izVKva",
+          "name": "Ollama account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "c400166f-ea43-40fc-884d-27fca4195bfc",
+      "name": "Item List Output Parser",
+      "type": "@n8n/n8n-nodes-langchain.outputParserItemList",
+      "typeVersion": 1,
+      "position": [
+        1240,
+        620
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=list 10 largest cities in  {{ $json.state }}",
+        "hasOutputParser": true
+      },
+      "id": "9768829a-ba80-41a8-aa3b-a9613cd7fed1",
+      "name": "Basic LLM Chain",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.4,
+      "position": [
+        1040,
+        400
+      ]
+    }
+  ],
+  "connections": {
+    "Execute Workflow Trigger": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ollama Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Item List Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "triggerCount": 0,
+  "versionId": "a67afd77-9c7e-4536-86b4-9200e0a962e8",
+  "owner": {
+    "type": "team",
+    "teamId": "7KQPZmuLDnKgOrJQ",
+    "teamName": "DEMO"
+  }
+}

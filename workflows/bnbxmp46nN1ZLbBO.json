@@ -1,0 +1,1109 @@
+{
+  "id": "bnbxmp46nN1ZLbBO",
+  "name": "Morressier",
+  "nodes": [
+    {
+      "parameters": {
+        "topic": "test-topic",
+        "groupId": "n8n-kafka-group",
+        "options": {}
+      },
+      "id": "159818d4-eeec-4552-b1ef-b2c619aa6be5",
+      "name": "Kafka Trigger",
+      "type": "n8n-nodes-base.kafkaTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        560,
+        380
+      ],
+      "credentials": {
+        "kafka": {
+          "id": "Oz59Nz7iOkd3uS9b",
+          "name": "Kafka account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "62d7559f-3e6a-479b-baf7-d2fe6b425834",
+              "name": "event",
+              "value": "={{ $json.message.split(':')[0] }}",
+              "type": "string"
+            },
+            {
+              "id": "9eebb7be-31d8-4dd3-9155-d2f3c353b287",
+              "name": "author",
+              "value": "={{ $json.message.split(':')[1] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "4c90341e-eb33-452b-bc08-0bb054fdb780",
+      "name": "Map Author Data to CSI API Request",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        800,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Custom Checklist Step with API",
+        "height": 355.91671166710046,
+        "width": 1283.7668442482386
+      },
+      "id": "86c555df-17ce-479b-a945-cc5b9022c3a1",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1292.3310193347982,
+        256.87459911227
+      ]
+    },
+    {
+      "parameters": {
+        "errorMessage": "error"
+      },
+      "id": "be57bef2-bd16-4e50-9484-5c9d5885aeba",
+      "name": "Stop and Error",
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        2360,
+        460
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "c9cb1887-e722-4265-a5b9-0e4b7190be78",
+      "name": "No Operation, do nothing",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        2360,
+        280
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "e376a8b9-d6a4-47ad-9069-21de3e1fa52a",
+      "name": "Map Response to Command to Update Data Field in Engine",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1560,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Data Warehouse Integration",
+        "height": 328.86705850664043,
+        "width": 1482.3790732988555
+      },
+      "id": "7a518a90-abaf-40de-a6d6-43596738ae97",
+      "name": "Sticky Note1",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1300,
+        647.9380672495261
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "dfcbf9a1-99dc-4040-b8ec-c992767d3b9d",
+      "name": "Filter",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        1340,
+        740
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "62d7559f-3e6a-479b-baf7-d2fe6b425834",
+              "name": "event",
+              "value": "={{ $json.message.split('|')[0] }}",
+              "type": "string"
+            },
+            {
+              "id": "9eebb7be-31d8-4dd3-9155-d2f3c353b287",
+              "name": "author",
+              "value": "={{ $json.message.split('|')[1] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "be9d62e1-dd00-4899-a64b-f8476edd012a",
+      "name": "Map to data warehouse request",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1560,
+        740
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "64eb5f83-1e5c-4192-93b2-e7ba37835c2e",
+      "name": "If1",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        2320,
+        740
+      ]
+    },
+    {
+      "parameters": {
+        "errorMessage": "error"
+      },
+      "id": "a7ef8005-d36b-408b-9d1b-f8719379fe5f",
+      "name": "Stop and Error1",
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        2580,
+        840
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "e183d1ca-824f-4d18-a8c0-8ebe37b1980a",
+      "name": "No Operation, do nothing1",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        2580,
+        660
+      ]
+    },
+    {
+      "parameters": {
+        "url": "http://example.com/api",
+        "options": {}
+      },
+      "id": "bd975873-58c5-4435-a19b-d1608bf4fa2d",
+      "name": "CSI API",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1340,
+        380
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "url": "http://example.com/perform-command",
+        "options": {}
+      },
+      "id": "e0d5adb5-aceb-4208-97e7-1ca8963b32e3",
+      "name": "Perform Command",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1800,
+        380
+      ],
+      "executeOnce": false,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "a1a0c34b-8fed-4428-8c82-9b15c1cab306",
+      "name": "If",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        2060,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "url": "http://www.example.com/dwh",
+        "options": {}
+      },
+      "id": "629f73b7-2f26-4165-9ee6-24fae1ed70fa",
+      "name": "Send to DWH",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1820,
+        740
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "bucketName": "s3",
+        "fileKey": "key"
+      },
+      "id": "f9305da8-6c8a-407a-aa8a-38f37df5fe46",
+      "name": "S3",
+      "type": "n8n-nodes-base.s3",
+      "typeVersion": 1,
+      "position": [
+        2060,
+        740
+      ],
+      "credentials": {
+        "s3": {
+          "id": "cereYGWjYoLrccIb",
+          "name": "S3 account"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.event }}",
+                    "rightValue": "article_submission",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "paper submitted"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "27fbf6c5-817d-484a-91c2-28824cab2ff1",
+      "name": "Switch",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [
+        1060,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Use Case: Data Streaming (listen to Kafka, transform, put into S3 bucket as Parquet/JSON)\n",
+        "height": 849.7892567685651,
+        "width": 2352.1232814153777,
+        "color": 7
+      },
+      "id": "0612c15b-09eb-4d05-bef4-4d0fc68637b2",
+      "name": "Sticky Note2",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        460,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Use Case: Legacy Integration (poll SFTP, Dropbox, transform and call our API)\n",
+        "height": 628.2369670014397,
+        "width": 2371.751811615512,
+        "color": 7
+      },
+      "id": "94534a0a-d668-4d44-b158-af358cc5344a",
+      "name": "Sticky Note3",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        460,
+        1420
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "search",
+        "query": "a",
+        "filters": {}
+      },
+      "id": "15e8f88c-86cb-44e1-8cf0-74b6ab24d9cb",
+      "name": "Dropbox",
+      "type": "n8n-nodes-base.dropbox",
+      "typeVersion": 1,
+      "position": [
+        860,
+        1560
+      ],
+      "credentials": {
+        "dropboxApi": {
+          "id": "j1zzoClZB2QqbgWN",
+          "name": "Dropbox account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes"
+            }
+          ]
+        }
+      },
+      "id": "f41f4bf9-0b4f-4b0e-8e61-0c03694df0f1",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        520,
+        1640
+      ],
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "operation": "list"
+      },
+      "id": "92e90d45-d2e1-4c91-940a-e0a3145cedcd",
+      "name": "FTP",
+      "type": "n8n-nodes-base.ftp",
+      "typeVersion": 1,
+      "position": [
+        860,
+        1740
+      ],
+      "credentials": {
+        "ftp": {
+          "id": "H8w6tHeGrzCRuCQy",
+          "name": "FTP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {}
+          ]
+        },
+        "options": {}
+      },
+      "id": "f6c122db-1a67-438d-9f98-856f1e46a3c5",
+      "name": "Aggregate",
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        1140,
+        1640
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "4a8dfcfd-f195-41ae-a4a9-36caa04416c8",
+      "name": "Loop Over Items",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1360,
+        1640
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "9af79c1b-b574-4348-bfe2-7a2b88725245",
+      "name": "No Operation, do nothing2",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1620,
+        1540
+      ]
+    },
+    {
+      "parameters": {
+        "url": "a",
+        "options": {}
+      },
+      "id": "1262c1cd-aee6-4fac-83ff-2c806212b44a",
+      "name": "HTTP Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1620,
+        1740
+      ]
+    },
+    {
+      "parameters": {
+        "path": "={{ $json.path }}"
+      },
+      "id": "dbc4939f-e40c-4b93-85b5-7acc5971bfba",
+      "name": "Download File",
+      "type": "n8n-nodes-base.ftp",
+      "typeVersion": 1,
+      "position": [
+        1660,
+        2600
+      ],
+      "executeOnce": false,
+      "credentials": {
+        "ftp": {
+          "id": "H8w6tHeGrzCRuCQy",
+          "name": "FTP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "31e96e99-ac14-4aa9-90b7-a884bbb33f98",
+              "leftValue": "={{ $json.type }}",
+              "rightValue": "d",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "5bbfe6ee-28ea-4a21-a80f-0df005d112be",
+      "name": "If Folder",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        1400,
+        2500
+      ]
+    },
+    {
+      "parameters": {
+        "sortFieldsUi": {
+          "sortField": [
+            {
+              "fieldName": "type",
+              "order": "descending"
+            },
+            {
+              "fieldName": "path"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "ac542f9f-fbaf-4800-b975-f03b40b0e30b",
+      "name": "Sort Folder First",
+      "type": "n8n-nodes-base.sort",
+      "typeVersion": 1,
+      "position": [
+        1240,
+        2500
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "66a15b4b-8b74-4343-859f-a330458ee76b",
+      "name": "When clicking \"Test workflow\"",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        580,
+        2500
+      ],
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "operation": "list",
+        "recursive": true
+      },
+      "id": "31acafc5-8c20-4608-8e0b-73ed09c4b015",
+      "name": "FTP List Files/Folders",
+      "type": "n8n-nodes-base.ftp",
+      "typeVersion": 1,
+      "position": [
+        840,
+        2500
+      ],
+      "credentials": {
+        "ftp": {
+          "id": "H8w6tHeGrzCRuCQy",
+          "name": "FTP account"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "path": "={{ $('If Folder').item.json.path }}",
+        "binaryData": true
+      },
+      "id": "660191db-7cb8-466c-bde3-39c8d27b4ccd",
+      "name": "Upload File",
+      "type": "n8n-nodes-base.dropbox",
+      "typeVersion": 1,
+      "position": [
+        1880,
+        2600
+      ],
+      "credentials": {
+        "dropboxApi": {
+          "id": "j1zzoClZB2QqbgWN",
+          "name": "Dropbox account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {}
+      },
+      "id": "dd0c139b-d722-4cbe-a0ee-d8fd368cf1ac",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        1040,
+        2500
+      ]
+    },
+    {
+      "parameters": {
+        "path": "sync-files",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "31b12771-940a-4937-9483-ebaca8eb1958",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1.1,
+      "position": [
+        580,
+        2700
+      ],
+      "webhookId": "4894f611-3d1c-4b9f-afa6-fad8ca78b4a7",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "resource": "folder",
+        "path": "={{ $json.path }}"
+      },
+      "id": "0678bb88-9d1e-4eab-8106-e4dae666bf7e",
+      "name": "Create Folder",
+      "type": "n8n-nodes-base.dropbox",
+      "typeVersion": 1,
+      "position": [
+        1660,
+        2380
+      ],
+      "credentials": {
+        "dropboxApi": {
+          "id": "j1zzoClZB2QqbgWN",
+          "name": "Dropbox account"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "id": "227d32e9-ffca-49e5-a187-6f65ef0a3fff",
+      "name": "Schedule Trigger1",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        580,
+        2320
+      ],
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Support Multiple Isolated Customer Environments (RBAC)\n## Developer Integration (IaC, CI/CD, Workflow in Git)\n## Observability (failures, throughput, latency, traces)\n## Data Privacy (EU Server Location, GDPR Compliance)\n## Security (Encryption, Credentials Store)\n## Use Case: API Integration (webhook, transform, call our API)\n## Use Case: Data Streaming (listen to Kafka, transform, put into S3 bucket as Parquet/JSON)\n## Use Case: Legacy Integration (poll SFTP, Dropbox, transform and call our API)\n\n\n\n\n\n\n\n",
+        "height": 453.17959989697096,
+        "width": 1064.7496797371414
+      },
+      "id": "60aa11b4-869a-4580-9066-787804d6b46d",
+      "name": "Sticky Note4",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        340,
+        -400
+      ]
+    },
+    {
+      "parameters": {
+        "dataToSave": {
+          "values": [
+            {
+              "key": "kafkamessage",
+              "value": "={{ $('Kafka Trigger').item.json.message }}"
+            }
+          ]
+        }
+      },
+      "id": "f59c6d39-eef2-4cae-b4d5-11b318355a68",
+      "name": "Execution Data",
+      "type": "n8n-nodes-base.executionData",
+      "typeVersion": 1,
+      "position": [
+        2940,
+        440
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "execution",
+        "operation": "get",
+        "executionId": "681",
+        "options": {
+          "activeWorkflows": true
+        },
+        "requestOptions": {}
+      },
+      "id": "10237956-857c-486d-b240-b38d4fa4c961",
+      "name": "n8n",
+      "type": "n8n-nodes-base.n8n",
+      "typeVersion": 1,
+      "position": [
+        520,
+        3160
+      ],
+      "credentials": {
+        "n8nApi": {
+          "id": "rbwuUukpTt4jyvro",
+          "name": "n8n account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "http://localhost:5678/api/v1/executions/682",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "n8nApi",
+        "options": {}
+      },
+      "id": "8f3e6f96-43f6-4a92-bd48-95f68dda7ade",
+      "name": "HTTP Request1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        520,
+        3000
+      ],
+      "credentials": {
+        "n8nApi": {
+          "id": "rbwuUukpTt4jyvro",
+          "name": "n8n account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Kafka Trigger": {
+      "main": [
+        [
+          {
+            "node": "Map Author Data to CSI API Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Map Author Data to CSI API Request": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Map Response to Command to Update Data Field in Engine": {
+      "main": [
+        [
+          {
+            "node": "Perform Command",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Map to data warehouse request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Map to data warehouse request": {
+      "main": [
+        [
+          {
+            "node": "Send to DWH",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Stop and Error1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CSI API": {
+      "main": [
+        [
+          {
+            "node": "Map Response to Command to Update Data Field in Engine",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Perform Command": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Stop and Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send to DWH": {
+      "main": [
+        [
+          {
+            "node": "S3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "S3": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "CSI API",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "FTP",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Dropbox",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FTP": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dropbox": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download File": {
+      "main": [
+        [
+          {
+            "node": "Upload File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If Folder": {
+      "main": [
+        [
+          {
+            "node": "Create Folder",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Download File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sort Folder First": {
+      "main": [
+        [
+          {
+            "node": "If Folder",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking \"Test workflow\"": {
+      "main": [
+        [
+          {
+            "node": "FTP List Files/Folders",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FTP List Files/Folders": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respond to Webhook": {
+      "main": [
+        [
+          {
+            "node": "Sort Folder First",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "FTP List Files/Folders",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger1": {
+      "main": [
+        [
+          {
+            "node": "FTP List Files/Folders",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "No Operation, do nothing1": {
+      "main": [
+        [
+          {
+            "node": "Execution Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "No Operation, do nothing": {
+      "main": [
+        [
+          {
+            "node": "Execution Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "triggerCount": 1,
+  "versionId": "2f4d3eca-ab46-4918-8dc2-6fcbbfe243f3",
+  "owner": {
+    "type": "team",
+    "teamId": "7KQPZmuLDnKgOrJQ",
+    "teamName": "DEMO"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "id": "moOIXkB5Y7wGYaTW",
+  "name": "Slack account",
+  "type": "slackApi",
+  "data": {
+    "accessToken": ""
+  },
+  "ownedBy": {
+    "type": "personal",
+    "personalEmail": "mandip@n8n.io"
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "id": "6yS7TdFDAUP1TWV9",
+  "name": "My workflow 2",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "78e1b210-0bd5-4956-92b2-0f28f4f4a9e8",
+      "name": "When clicking ‘Test workflow’",
+      "type": "n8n-nodes-base.manualTrigger",
+      "position": [
+        720,
+        320
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "url": "https://www.google.com/maps/search/restaurants+dudley",
+        "options": {}
+      },
+      "id": "dcd31884-4997-4c2b-9a39-21af90af4043",
+      "name": "HTTP Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1160,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://www.google.com/maps/search/restaurants+dudley",
+        "options": {}
+      },
+      "id": "ff71d956-697d-43fb-a66a-e2c93d6ae7d5",
+      "name": "Puppeteer",
+      "type": "n8n-nodes-puppeteer.puppeteer",
+      "typeVersion": 1,
+      "position": [
+        1040,
+        640
+      ]
+    }
+  ],
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Puppeteer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "triggerCount": 0,
+  "versionId": "6060d2ae-9622-4159-9d62-33ffb7b6391f",
+  "owner": {
+    "type": "personal",
+    "personalEmail": "mandip@n8n.io"
+  }
+}

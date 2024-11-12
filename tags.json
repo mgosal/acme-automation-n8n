@@ -1,0 +1,38 @@
+{
+  "tags": [
+    {
+      "id": "j1NXmBLGuDeDDQ0g",
+      "name": "🎭 kafka"
+    },
+    {
+      "id": "SCkwgOJIFstW78j8",
+      "name": "Slack Security Notify"
+    },
+    {
+      "id": "485HP48c9NeFrCnn",
+      "name": "n8n project 5-31-24"
+    },
+    {
+      "id": "22U8HHcYrv3LLaZE",
+      "name": "Perplexity"
+    }
+  ],
+  "mappings": [
+    {
+      "workflowId": "z4XwtLAemE7r84W0",
+      "tagId": "485HP48c9NeFrCnn"
+    },
+    {
+      "workflowId": "z4XwtLAemE7r84W0",
+      "tagId": "SCkwgOJIFstW78j8"
+    },
+    {
+      "workflowId": "bnbxmp46nN1ZLbBO",
+      "tagId": "j1NXmBLGuDeDDQ0g"
+    },
+    {
+      "workflowId": "reTqIX2Z0KHhgRNb",
+      "tagId": "22U8HHcYrv3LLaZE"
+    }
+  ]
+}

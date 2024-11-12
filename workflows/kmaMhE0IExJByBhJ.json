@@ -1,0 +1,315 @@
+{
+  "id": "kmaMhE0IExJByBhJ",
+  "name": "Ai agent with tools",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "77ac7233-fe1b-42b0-9cd2-762084d25d00",
+      "name": "OpenAI Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        1020,
+        720
+      ],
+      "disabled": true
+    },
+    {
+      "parameters": {},
+      "id": "44bdae32-0f14-467f-8eef-cc116fefc438",
+      "name": "Window Buffer Memory",
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.2,
+      "position": [
+        1140,
+        720
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "aa0b9005-4663-409d-9779-b3ab57080b99",
+      "name": "Calculator",
+      "type": "@n8n/n8n-nodes-langchain.toolCalculator",
+      "typeVersion": 1,
+      "position": [
+        1300,
+        620
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "766a1eda-3e6e-479d-bb06-7fa3a421ab26",
+      "name": "Wikipedia",
+      "type": "@n8n/n8n-nodes-langchain.toolWikipedia",
+      "typeVersion": 1,
+      "position": [
+        1440,
+        620
+      ]
+    },
+    {
+      "parameters": {
+        "public": true,
+        "options": {}
+      },
+      "id": "0f57cc56-8d9f-41e9-a1d0-da6fde6ff3da",
+      "name": "When chat message received",
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        700,
+        400
+      ],
+      "webhookId": "73bcbb99-0978-4ae0-9933-5937c38507de"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "options": {}
+      },
+      "id": "26330e20-0f9f-419c-b5f3-c4b229377c48",
+      "name": "AI Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.6,
+      "position": [
+        1180,
+        400
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "0755ea5a-7293-4c32-807d-24102c6b1b52",
+      "name": "Wait",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1700,
+        600
+      ],
+      "webhookId": "95ba7942-06a9-4a7b-86e5-81f2fcaa0699"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours"
+            }
+          ]
+        }
+      },
+      "id": "7ca7d460-6a66-49c6-99d4-5fad1698731b",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        1920,
+        600
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "thread",
+        "operation": "get",
+        "options": {}
+      },
+      "id": "69ea9ae8-ef32-4d66-9612-921c14e9e915",
+      "name": "Gmail",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        2140,
+        600
+      ],
+      "webhookId": "b66fad52-b988-4cf0-8813-5decfe66a36c"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "fb103de5-eb5b-4aa3-81e9-833f2d50a9be",
+              "leftValue": "followup",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "e18d8ff1-179c-49f1-8904-d202a40ed52f",
+      "name": "If",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2320,
+        600
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "31672717-adc3-4b84-9438-3c221f0cf8b9",
+      "name": "AI Agent1",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.6,
+      "position": [
+        2860,
+        440
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "4f5f3c23-9147-4636-9298-62a681c6c67c",
+      "name": "AI Agent2",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.6,
+      "position": [
+        2760,
+        820
+      ]
+    },
+    {
+      "parameters": {
+        "description": "use this to update a shipment",
+        "workflowId": {
+          "__rl": true,
+          "value": "BWWrv0eoilc8ni2y",
+          "mode": "list",
+          "cachedResultName": "DEMO — update shipment"
+        }
+      },
+      "id": "6c89b0cc-6f17-4665-915d-1f8bf54e3e8b",
+      "name": "Call n8n Workflow Tool",
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        3240,
+        1120
+      ]
+    }
+  ],
+  "connections": {
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Window Buffer Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculator": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wikipedia": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Gmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "AI Agent2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call n8n Workflow Tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "triggerCount": 2,
+  "versionId": "b64811fd-7d32-4241-8011-a4639acc2e1c",
+  "owner": {
+    "type": "team",
+    "teamId": "7KQPZmuLDnKgOrJQ",
+    "teamName": "DEMO"
+  }
+}

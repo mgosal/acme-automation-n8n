@@ -1,0 +1,15 @@
+{
+  "id": "Oz59Nz7iOkd3uS9b",
+  "name": "Kafka account",
+  "type": "kafka",
+  "data": {
+    "clientId": "",
+    "brokers": "",
+    "ssl": false
+  },
+  "ownedBy": {
+    "type": "team",
+    "teamId": "7KQPZmuLDnKgOrJQ",
+    "teamName": "DEMO"
+  }
+}

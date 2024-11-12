@@ -1,0 +1,182 @@
+{
+  "id": "7mGXJw4olX5BMV33",
+  "name": "url tool",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "d70bb951-c8b0-472e-96f9-0bd65f247e76",
+      "name": "Execute workflow",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        720,
+        360
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "49771f50-5838-4910-8444-030b8117aef1",
+              "name": "query",
+              "value": "={{ $json.query }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "76f670e5-998c-4f72-b1ed-a5c802937562",
+      "name": "Set query",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [
+        940,
+        360
+      ]
+    },
+    {
+      "parameters": {
+        "compare": "selectedFields",
+        "fieldsToCompare": "url",
+        "options": {}
+      },
+      "id": "2320650a-9ef1-48ea-a685-f9c94a361f9d",
+      "name": "Remove duplicated URLs",
+      "type": "n8n-nodes-base.removeDuplicates",
+      "typeVersion": 1,
+      "position": [
+        1380,
+        360
+      ]
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "id": "dee7e5e1-ddb0-403f-b341-83f20193d179",
+      "name": "Create array of URLs",
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        1600,
+        360
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "2aa3af36-90ea-4ca5-9749-356524ceee00",
+              "name": "response",
+              "value": "={{ $json.data }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "2d548711-bded-4224-8d71-0e59043e99ae",
+      "name": "Set response",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [
+        1820,
+        360
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://us-central1-oskar-357812.cloudfunctions.net/web2url",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "url",
+              "value": "={{ $json.query }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "1da82b63-d1a1-4b2c-808b-b6e3fac6c568",
+      "name": "Get website URLs (PUPPETEER)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1160,
+        360
+      ]
+    }
+  ],
+  "connections": {
+    "Execute workflow": {
+      "main": [
+        [
+          {
+            "node": "Set query",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set query": {
+      "main": [
+        [
+          {
+            "node": "Get website URLs (PUPPETEER)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Remove duplicated URLs": {
+      "main": [
+        [
+          {
+            "node": "Create array of URLs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create array of URLs": {
+      "main": [
+        [
+          {
+            "node": "Set response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get website URLs (PUPPETEER)": {
+      "main": [
+        [
+          {
+            "node": "Remove duplicated URLs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "triggerCount": 0,
+  "versionId": "c7587f5e-99a3-402c-900e-073381e27b53",
+  "owner": {
+    "type": "team",
+    "teamId": "zaizBC64TVutWBqw",
+    "teamName": "email spy"
+  }
+}

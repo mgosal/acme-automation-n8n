@@ -1,0 +1,380 @@
+{
+  "id": "uioHzzG25LjJkeVu",
+  "name": "rag with in mem doc store",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "ae978f82-8e60-48b2-8973-86faedaa8a53",
+      "name": "When clicking ‘Test workflow’",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        100,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "e47128e5-3ac2-4c92-9961-52d637f70694",
+      "name": "Default Data Loader",
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1,
+      "position": [
+        1160,
+        600
+      ]
+    },
+    {
+      "parameters": {
+        "chunkSize": 300,
+        "chunkOverlap": 75
+      },
+      "id": "6edf6b55-5da3-43d9-ae8d-762779300186",
+      "name": "Token Splitter",
+      "type": "@n8n/n8n-nodes-langchain.textSplitterTokenSplitter",
+      "typeVersion": 1,
+      "position": [
+        1280,
+        740
+      ]
+    },
+    {
+      "parameters": {
+        "model": "mxbai-embed-large:latest"
+      },
+      "id": "6794f7e8-32aa-4c7a-b118-00bb7d0b3568",
+      "name": "Embeddings Ollama",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOllama",
+      "typeVersion": 1,
+      "position": [
+        1060,
+        600
+      ],
+      "credentials": {
+        "ollamaApi": {
+          "id": "s3LMboSMY1izVKva",
+          "name": "Ollama account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fileSelector": "/Users/mandip/Library/CloudStorage/GoogleDrive-mandip@n8n.io/Shared drives/🕹️ Solutions/N8n_Policies_20240904/*.pdf",
+        "options": {}
+      },
+      "id": "ab216cae-2070-4a6f-b16e-d1bf94b97830",
+      "name": "Read Files from Disk",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        300,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "dc1e3931-f1e6-4ad5-a956-f68c548be3a9",
+      "name": "Loop Over Items",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        520,
+        400
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "fc484243-ee0d-4f8a-9828-865d3b6ad96e",
+      "name": "No Operation, do nothing",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        880,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "options": {}
+      },
+      "id": "8ef3d006-d3ee-4ea7-9908-d4625dca60c0",
+      "name": "Extract from File",
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        780,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "insert"
+      },
+      "id": "fd63cf3e-1bf2-4914-96ea-44d443780f70",
+      "name": "In-Memory Vector Store",
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreInMemory",
+      "typeVersion": 1,
+      "position": [
+        1040,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "model": "llama3.1:latest",
+        "options": {}
+      },
+      "id": "72288b1d-bfa7-42f1-a85d-0e9a2bac4da7",
+      "name": "Ollama Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        1380,
+        320
+      ],
+      "credentials": {
+        "ollamaApi": {
+          "id": "s3LMboSMY1izVKva",
+          "name": "Ollama account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 50
+      },
+      "id": "0502fd6d-2c7a-494e-865b-aad49f2d5641",
+      "name": "Window Buffer Memory",
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.2,
+      "position": [
+        1540,
+        340
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "fcbcc19e-d4fd-4d65-b77f-040915036b47",
+      "name": "In-Memory Vector Store1",
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreInMemory",
+      "typeVersion": 1,
+      "position": [
+        1640,
+        520
+      ]
+    },
+    {
+      "parameters": {
+        "model": "mxbai-embed-large:latest"
+      },
+      "id": "b8889681-6e6d-4d6e-a32f-910d77a29114",
+      "name": "Embeddings Ollama1",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOllama",
+      "typeVersion": 1,
+      "position": [
+        1480,
+        640
+      ],
+      "credentials": {
+        "ollamaApi": {
+          "id": "s3LMboSMY1izVKva",
+          "name": "Ollama account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "id": "248d0103-5bb4-486a-9444-537d59022aa8",
+      "name": "Question and Answer Chain",
+      "type": "@n8n/n8n-nodes-langchain.chainRetrievalQa",
+      "typeVersion": 1.3,
+      "position": [
+        1520,
+        140
+      ]
+    },
+    {
+      "parameters": {
+        "topK": 8
+      },
+      "id": "b0fa07d3-9b79-4cd3-9f23-59d6d0ba1cfa",
+      "name": "Vector Store Retriever",
+      "type": "@n8n/n8n-nodes-langchain.retrieverVectorStore",
+      "typeVersion": 1,
+      "position": [
+        1680,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "4107f93b-879f-4786-a040-5fec0a69e2f5",
+      "name": "When chat message received",
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        1240,
+        60
+      ],
+      "webhookId": "8165f370-f3fb-484c-bc6b-d8853f318bb4"
+    }
+  ],
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Read Files from Disk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "In-Memory Vector Store",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Token Splitter": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Default Data Loader",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings Ollama": {
+      "ai_embedding": [
+        [
+          {
+            "node": "In-Memory Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Files from Disk": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "In-Memory Vector Store",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ollama Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Question and Answer Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "In-Memory Vector Store1": {
+      "ai_vectorStore": [
+        [
+          {
+            "node": "Vector Store Retriever",
+            "type": "ai_vectorStore",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings Ollama1": {
+      "ai_embedding": [
+        [
+          {
+            "node": "In-Memory Vector Store1",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Vector Store Retriever": {
+      "ai_retriever": [
+        [
+          {
+            "node": "Question and Answer Chain",
+            "type": "ai_retriever",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Question and Answer Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "triggerCount": 0,
+  "versionId": "78aa808c-1db3-4a0a-bc02-11e5b4a7e067",
+  "owner": {
+    "type": "team",
+    "teamId": "Cu4hotK7yZkWyMWd",
+    "teamName": "RFX"
+  }
+}

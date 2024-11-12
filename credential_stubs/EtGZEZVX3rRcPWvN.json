@@ -1,0 +1,13 @@
+{
+  "id": "EtGZEZVX3rRcPWvN",
+  "name": "Ollama account 4",
+  "type": "ollamaApi",
+  "data": {
+    "baseUrl": ""
+  },
+  "ownedBy": {
+    "type": "team",
+    "teamId": "LIGp9ml9heTyKmkT",
+    "teamName": "Ai (perplexity api)"
+  }
+}

@@ -1,0 +1,205 @@
+{
+  "id": "vR8nBPYkGT7BRTtF",
+  "name": "freshservice and halo sync",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "264df808-06cc-4a7c-8951-810bfcb754ce",
+      "name": "When clicking ‘Test workflow’",
+      "type": "n8n-nodes-base.manualTrigger",
+      "position": [
+        740,
+        360
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "resource": "software",
+        "additionalFields": {}
+      },
+      "id": "24f15319-19cd-40ed-9732-fba9213ffc83",
+      "name": "Freshservice",
+      "type": "n8n-nodes-base.freshservice",
+      "typeVersion": 1,
+      "position": [
+        1060,
+        520
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {},
+            {}
+          ]
+        }
+      },
+      "id": "8514b716-63f3-47ae-a2a1-1b551d65127d",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        760,
+        640
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "0849c77a-9097-48f3-863d-422c5f083817",
+      "name": "Edit Fields",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1280,
+        520
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "ticket",
+        "operation": "create",
+        "additionalFields": {}
+      },
+      "id": "c6a7f827-2313-4bd7-acc5-d433aa5fdf98",
+      "name": "HaloPSA",
+      "type": "n8n-nodes-base.haloPSA",
+      "typeVersion": 1,
+      "position": [
+        1500,
+        520
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "ticket",
+        "operation": "create",
+        "additionalFields": {}
+      },
+      "id": "141a7e96-cb07-4474-b87f-3ed253eb6188",
+      "name": "HaloPSA1",
+      "type": "n8n-nodes-base.haloPSA",
+      "typeVersion": 1,
+      "position": [
+        1060,
+        780
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "2b2106e8-9c1f-4a6e-a51d-14e274114b78",
+      "name": "Edit Fields1",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1280,
+        780
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "ticket",
+        "operation": "update",
+        "updateFields": {}
+      },
+      "id": "5aadd6e4-22ef-4210-8602-f0f1aeadece8",
+      "name": "Freshservice2",
+      "type": "n8n-nodes-base.freshservice",
+      "typeVersion": 1,
+      "position": [
+        1540,
+        780
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "49012f41-74e2-4bd8-9045-63b6128b6f36",
+      "name": "Extract from File",
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        460,
+        460
+      ]
+    }
+  ],
+  "connections": {
+    "Freshservice": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "HaloPSA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Freshservice",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "HaloPSA1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HaloPSA1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Freshservice2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "triggerCount": 0,
+  "versionId": "99052f4b-dd6d-45e2-af52-9a53818ae841",
+  "owner": {
+    "type": "team",
+    "teamId": "7KQPZmuLDnKgOrJQ",
+    "teamName": "DEMO"
+  }
+}

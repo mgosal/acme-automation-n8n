@@ -1,0 +1,93 @@
+{
+  "id": "0gkRREJy24iYwtnp",
+  "name": "My workflow 6",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "ab62c02b-9e1b-409d-bce9-9e07f66f9f33",
+      "name": "When clicking ‘Test workflow’",
+      "type": "n8n-nodes-base.manualTrigger",
+      "position": [
+        720,
+        320
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "84f94782-aef8-49dd-ad12-32987290d9c7",
+              "name": "state",
+              "value": "scotland",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "6d226848-5840-4e9d-ad1e-054e932d5e50",
+      "name": "Edit Fields",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        940,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "PESVetnBwNJ2i9Pw",
+          "mode": "list",
+          "cachedResultName": "DEMO — top 10 cities in a state"
+        },
+        "options": {}
+      },
+      "id": "7d19ab2a-d8e6-47d9-bfda-26a37724bbfa",
+      "name": "Execute Workflow",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.1,
+      "position": [
+        1160,
+        320
+      ]
+    }
+  ],
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Execute Workflow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "triggerCount": 0,
+  "versionId": "2239a035-3c81-4791-ad49-90dbda665156",
+  "owner": {
+    "type": "team",
+    "teamId": "7KQPZmuLDnKgOrJQ",
+    "teamName": "DEMO"
+  }
+}

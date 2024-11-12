@@ -1,0 +1,65 @@
+{
+  "id": "0Cl7iA9bL4pVAfll",
+  "name": "Enterprise Features",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "# Features\n\n- ## SAML SSO and LDAP\n- ## Log streaming (pipe all logs into Datadog, Sentry, etc.)\n- ## Environments (dev/test/prod versions of workflows, synced via [Git](https://docs.n8n.io/source-control-environments/))\n- ## External secrets store integration\n- ## Sharing of workflows and credentials between users\n- ## Execution search\n- ## Global Variables",
+        "height": 545.9046415204218,
+        "width": 1093.5907257720542,
+        "color": 7
+      },
+      "id": "6821187b-3fc6-4a49-bbe1-fb99863c7890",
+      "name": "Sticky Note1",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        100,
+        660
+      ]
+    },
+    {
+      "parameters": {
+        "content": "# Support\n\n|                              | **Platinum**                                                             | **Premium**                                | **Standard**                       |\n|:----------------------------------------|:-----------------------------------------------------:|:------------------------------------------------------:|----------------------------------------------|\n| **SLAs (first response)**     | S1: < 1 hour (24/7)                                |      < 2 hours (8/5¹)                       | No SLA                             |\n|                              | S2: < 4 hours (8/5¹)                                                   |     < 8 hours (8/5¹)                       |                                    |\n|                              | S3: < 8 hours (8/5¹)                                                  |      < 16 hours (8/5¹)                      |                                    |\n|                              | S4: < 8 hours (8/5¹)                                                  |     < 16 hours (8/5¹)                      |                                    |\n| **Named support contacts**    | 4                                         | 2                                          | 2                                  |\n| \n| **Support channels**          | Ticket, forum                             | Ticket, forum                              | Ticket, forum                      |\n| \n| **Onboarding service**        | 10 hours                                  | 3 hours                                    | Not included                       |\n| \n\n¹ 8/5 refers to 8 hours a day, 5 days a week.",
+        "height": 547.9868146136321,
+        "width": 1092.7299974722798,
+        "color": 7
+      },
+      "id": "16a3d1e2-ecf5-4c29-8ca9-623bac2d1420",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1220,
+        660
+      ]
+    },
+    {
+      "parameters": {
+        "content": "# Definitions \n\n## Active workflow\n- An ‘active workflow’ is a workflow that is activated (so that it runs automatically)\n- Active workflows with multiple triggers count multiple times towards your quota\n- Workflows don’t count towards your quota if their only triggers are one/some of the\nfollowing: Execute Workflow Trigger, Manual Trigger, Error Trigger (so sub-workflows\ndon’t count, for example)\n- ‘Wait’ nodes that retrigger workflows on receiving a webhook also don’t count\n\n## Production instance\n- An instance of n8n is classified as ‘production’ if it runs workflows that provide business or operational value\n- Self-hosted instances where none of the workflows meet this definition (e.g. instances solely for development or testing) are not charged",
+        "height": 540.3837044634663,
+        "width": 1092.7299974722798,
+        "color": 7
+      },
+      "id": "2f5b4d22-e3d2-4938-b5ff-93239fb0edcc",
+      "name": "Sticky Note4",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        2400,
+        680
+      ]
+    }
+  ],
+  "connections": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "triggerCount": 0,
+  "versionId": "0879121e-57ac-4a07-bd5c-3056ec62a9ac",
+  "owner": {
+    "type": "team",
+    "teamId": "7KQPZmuLDnKgOrJQ",
+    "teamName": "DEMO"
+  }
+}

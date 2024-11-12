@@ -1,0 +1,131 @@
+{
+  "id": "2KZD1s673Ugdu2Qc",
+  "name": "text tool",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "81287c67-b186-459f-a925-9ec643b5e780",
+      "name": "Execute workflow",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        580,
+        360
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "49771f50-5838-4910-8444-030b8117aef1",
+              "name": "query",
+              "value": "={{ $json.query }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "db745504-a668-494a-a33f-cac0a4c0a808",
+      "name": "Set query",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [
+        800,
+        360
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://us-central1-oskar-357812.cloudfunctions.net/scrape-page",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "url",
+              "value": "={{ $json.query }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "58ccf40b-e60a-407c-930e-c8457241873c",
+      "name": "Get website content (PUPPETEER)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1020,
+        360
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f1ce079d-dcb9-435c-a015-5ccd662fa255",
+              "name": "response",
+              "value": "={{ $json.data }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "6e254d66-3dcc-4d51-8707-5d56322dabe3",
+      "name": "Set response",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [
+        1240,
+        360
+      ]
+    }
+  ],
+  "connections": {
+    "Execute workflow": {
+      "main": [
+        [
+          {
+            "node": "Set query",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set query": {
+      "main": [
+        [
+          {
+            "node": "Get website content (PUPPETEER)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get website content (PUPPETEER)": {
+      "main": [
+        [
+          {
+            "node": "Set response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "triggerCount": 0,
+  "versionId": "c0e165af-cf15-407e-adf2-7510f5e2cbd7",
+  "owner": {
+    "type": "team",
+    "teamId": "zaizBC64TVutWBqw",
+    "teamName": "email spy"
+  }
+}

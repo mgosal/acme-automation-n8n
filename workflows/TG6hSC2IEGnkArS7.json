@@ -1,0 +1,293 @@
+{
+  "id": "TG6hSC2IEGnkArS7",
+  "name": "soap request",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "5a02a94d-83b0-4e8e-93fd-926ff4b99943",
+      "name": "When clicking ‘Test workflow’",
+      "type": "n8n-nodes-base.manualTrigger",
+      "position": [
+        460,
+        320
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "authentication": "soapAPICredentialType",
+        "method": "POST",
+        "url": "http://0.0.0.0:8000/?wsdl",
+        "soapBody": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:exam=\"http://example.com/soap/\">\n   <soapenv:Header/>\n   <soapenv:Body>\n      <exam:reverse_string>\n         <exam:text>Hello, World!</exam:text>\n      </exam:reverse_string>\n   </soapenv:Body>\n</soapenv:Envelope>",
+        "convertToJson": true
+      },
+      "id": "0e5becf0-19f3-40f7-acc2-cee04612c3ad",
+      "name": "SOAP Request",
+      "type": "n8n-nodes-soaprequest.soapRequest",
+      "typeVersion": 1,
+      "position": [
+        1140,
+        280
+      ],
+      "credentials": {
+        "soapApi": {
+          "id": "SNndsqOBWdqCrG9c",
+          "name": "SOAP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://0.0.0.0:8000/?wsdl",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "text/xml",
+        "body": "=<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:exam=\"http://example.com/soap/\">\n    <soapenv:Header/>\n      <soapenv:Body>\n        <exam:reverse_string>\n          <exam:text>{{ $json.textToReverse }}</exam:text>\n        </exam:reverse_string>\n      </soapenv:Body>\n</soapenv:Envelope>",
+        "options": {
+          "response": {}
+        }
+      },
+      "id": "fa97c996-225b-4f3a-93d7-6de3536e2eed",
+      "name": "HTTP Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        880,
+        500
+      ],
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "LtSG0TCr6SXWuaTw",
+          "name": "Unnamed credential"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "865adbfc-7e0f-48cd-965c-8ee8f04d8694",
+              "name": "xmlbody",
+              "value": "={{ '<?xml version=\"1.0\" encoding=\"UTF-8\"?> <soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:exam=\"http://example.com/soap/\">    <soapenv:Header/>    <soapenv:Body>       <exam:reverse_string>          <exam:text>Hello, World!</exam:text>       </exam:reverse_string>    </soapenv:Body> </soapenv:Envelope>' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "5b99d4e4-7a52-403d-afa8-74b8961542ba",
+      "name": "Edit Fields",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -80,
+        660
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "d3567b20-c21d-46dc-8690-2692a665a5a2",
+      "name": "XML",
+      "type": "n8n-nodes-base.xml",
+      "typeVersion": 1,
+      "position": [
+        1080,
+        500
+      ]
+    },
+    {
+      "parameters": {
+        "dataPropertyName": "xmlbody",
+        "options": {}
+      },
+      "id": "bdffa917-9526-4b9f-a845-d50cf089cc7b",
+      "name": "XML1",
+      "type": "n8n-nodes-base.xml",
+      "typeVersion": 1,
+      "position": [
+        120,
+        660
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "51fe1908-cdfe-477a-9a6c-8be435baed9f",
+              "name": "",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "19cb7af4-6df2-4175-b804-f9a5ed60ac01",
+      "name": "Edit Fields1",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1360,
+        360
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "ba165c1f-f70f-45f1-bd51-43c92e80a2ef",
+      "name": "WSDL Parser",
+      "type": "CUSTOM.wsdl",
+      "typeVersion": 1,
+      "position": [
+        180,
+        800
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": []
+        },
+        "options": {}
+      },
+      "id": "e636b076-ecdd-4e12-96e1-3921bb050869",
+      "name": "Edit Fields2",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        440,
+        940
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "d0a104b0-618f-4c39-ab93-683e70c4de3c",
+      "name": "WSDL Parser1",
+      "type": "CUSTOM.wsdl",
+      "typeVersion": 1,
+      "position": [
+        400,
+        800
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "soapAPICredentialType",
+        "method": "POST",
+        "url": "http://0.0.0.0:8000/?wsdl",
+        "soapBody": "=    <Header/>\n    <Body>\n        <reverse_string>\n            <text>{{ $json.textToReverse }}</text>\n        </reverse_string>\n    </Body>\n"
+      },
+      "id": "f3b7313c-fc0e-45ae-93c1-7a915e0cf755",
+      "name": "SOAP Request1",
+      "type": "n8n-nodes-soaprequest.soapRequest",
+      "typeVersion": 1,
+      "position": [
+        880,
+        740
+      ],
+      "alwaysOutputData": false,
+      "credentials": {
+        "soapApi": {
+          "id": "SNndsqOBWdqCrG9c",
+          "name": "SOAP account"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "bc775886-d5ea-4d37-9911-22717448c20f",
+              "name": "textToReverse",
+              "value": "={{ $json['soapenv:Envelope']['soapenv:Body']['exam:reverse_string']['exam:text'] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a7c4ab24-2ffb-4e7d-b195-ba4a7d48e010",
+      "name": "Edit Fields3",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        680,
+        500
+      ]
+    }
+  ],
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "SOAP Request",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "XML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "XML1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields3": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "SOAP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "triggerCount": 0,
+  "versionId": "e33e0d2d-25e7-4baf-a320-8be52b5ac588",
+  "owner": {
+    "type": "team",
+    "teamId": "7KQPZmuLDnKgOrJQ",
+    "teamName": "DEMO"
+  }
+}

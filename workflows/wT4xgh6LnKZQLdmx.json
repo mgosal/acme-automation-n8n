@@ -1,0 +1,163 @@
+{
+  "id": "wT4xgh6LnKZQLdmx",
+  "name": "Secure n8n form with JWT verify",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "verify",
+        "token": "={{ $json.query.jwtToken }}",
+        "options": {}
+      },
+      "id": "30f261d0-68a3-4ba7-b143-8c08e255e161",
+      "name": "verify JWT",
+      "type": "n8n-nodes-base.jwt",
+      "typeVersion": 1,
+      "position": [
+        1160,
+        560
+      ],
+      "credentials": {
+        "jwtAuth": {
+          "id": "2Glwu1MtS6PnFXXD",
+          "name": "JWT Auth account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "respondWith": "redirect",
+        "redirectURL": "https://app.n8n.cloud/login",
+        "options": {}
+      },
+      "id": "dd0955c9-b423-4e79-ad75-991f0d1e8f6f",
+      "name": "redirect to login page",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1380,
+        740
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "redirect",
+        "redirectURL": "={{ $execution.resumeFormUrl }}",
+        "options": {}
+      },
+      "id": "31ea4800-14de-4439-bfaa-85a1ae011289",
+      "name": "redirect to form",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1420,
+        540
+      ]
+    },
+    {
+      "parameters": {
+        "resume": "form",
+        "formTitle": "test",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Name"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "53ec38b9-fec0-468c-9ce9-b3ac9f5ce299",
+      "name": "secured form",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1720,
+        540
+      ],
+      "webhookId": "af7cce24-18b8-47e5-83e0-1961002ae684"
+    },
+    {
+      "parameters": {
+        "content": "Call the webhook endpoint with a query param with the jwt token, e.g.\n\n\nhttp://localhost:5678/webhook/securedform?jwtToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.55h17taK_Sz00vt0ipRcQ5OtHdWc3MKY-j7aLZFDY8U",
+        "height": 140.8537131652899,
+        "width": 501.66267349496314
+      },
+      "id": "ddbf5c83-f151-403a-b9e5-e4cca05e9a77",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        800,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "path": "securedform",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "4f1a524a-467c-45ad-a06b-aed2ceb5b5f1",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        800,
+        560
+      ],
+      "webhookId": "03969da9-ab9d-4a1e-8f15-daf2ca46cb9e"
+    }
+  ],
+  "connections": {
+    "verify JWT": {
+      "main": [
+        [
+          {
+            "node": "redirect to form",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "redirect to login page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "redirect to form": {
+      "main": [
+        [
+          {
+            "node": "secured form",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "verify JWT",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "triggerCount": 0,
+  "versionId": "17f5200e-c582-4217-a4ae-1e165513d622",
+  "owner": {
+    "type": "personal",
+    "personalEmail": "mandip@n8n.io"
+  }
+}

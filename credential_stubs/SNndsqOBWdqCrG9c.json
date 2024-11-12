@@ -1,0 +1,14 @@
+{
+  "id": "SNndsqOBWdqCrG9c",
+  "name": "SOAP account",
+  "type": "soapApi",
+  "data": {
+    "username": "",
+    "password": ""
+  },
+  "ownedBy": {
+    "type": "team",
+    "teamId": "7KQPZmuLDnKgOrJQ",
+    "teamName": "DEMO"
+  }
+}

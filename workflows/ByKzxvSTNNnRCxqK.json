@@ -1,0 +1,27 @@
+{
+  "id": "ByKzxvSTNNnRCxqK",
+  "name": "My workflow 4",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "88ea06d6-59d8-4de9-b34f-f57659270605",
+      "name": "Execute Workflow Trigger",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1,
+      "position": [
+        300,
+        340
+      ]
+    }
+  ],
+  "connections": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "triggerCount": 0,
+  "versionId": "2123b817-3c03-4368-a97b-8d1b89dad52d",
+  "owner": {
+    "type": "personal",
+    "personalEmail": "mandip@n8n.io"
+  }
+}

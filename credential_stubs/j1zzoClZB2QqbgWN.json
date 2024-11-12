@@ -1,0 +1,13 @@
+{
+  "id": "j1zzoClZB2QqbgWN",
+  "name": "Dropbox account",
+  "type": "dropboxApi",
+  "data": {
+    "accessToken": ""
+  },
+  "ownedBy": {
+    "type": "team",
+    "teamId": "7KQPZmuLDnKgOrJQ",
+    "teamName": "DEMO"
+  }
+}

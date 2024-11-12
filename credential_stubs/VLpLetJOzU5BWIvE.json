@@ -1,0 +1,13 @@
+{
+  "id": "VLpLetJOzU5BWIvE",
+  "name": "Zep Api account",
+  "type": "zepApi",
+  "data": {
+    "apiKey": ""
+  },
+  "ownedBy": {
+    "type": "team",
+    "teamId": "Cu4hotK7yZkWyMWd",
+    "teamName": "RFX"
+  }
+}

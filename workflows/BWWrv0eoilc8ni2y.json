@@ -1,0 +1,54 @@
+{
+  "id": "BWWrv0eoilc8ni2y",
+  "name": "update shipment",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "b849f553-8403-4e5a-b0bf-c9be26f38d95",
+      "name": "When clicking ‘Test workflow’",
+      "type": "n8n-nodes-base.manualTrigger",
+      "position": [
+        720,
+        320
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "url": "fourkits.com/api",
+        "options": {}
+      },
+      "id": "fb5ac60f-7b2e-4942-ae62-a3170c9df90b",
+      "name": "HTTP Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1000,
+        320
+      ]
+    }
+  ],
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "triggerCount": 0,
+  "versionId": "ed6d4964-efb2-4bd5-94c3-5b8cfe5caa71",
+  "owner": {
+    "type": "team",
+    "teamId": "7KQPZmuLDnKgOrJQ",
+    "teamName": "DEMO"
+  }
+}

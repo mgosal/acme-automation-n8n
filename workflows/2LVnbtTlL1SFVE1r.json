@@ -1,0 +1,328 @@
+{
+  "id": "2LVnbtTlL1SFVE1r",
+  "name": "2fa",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "2825e83e-3c58-495b-a35c-682e4c49a242",
+      "name": "When clicking ‘Test workflow’",
+      "type": "n8n-nodes-base.manualTrigger",
+      "position": [
+        1440,
+        320
+      ],
+      "typeVersion": 1,
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const speakeasy = require('speakeasy');\n\n// Generate a secret key\nconst secret = speakeasy.generateSecret();\n\n// Generate a time-based token\nconst token = speakeasy.totp({\n  secret: secret.base32,\n  encoding: 'base32'\n});\n\n// Verify the token\nconst verified = speakeasy.totp.verify({\n  secret: secret.base32,\n  encoding: 'base32',\n  token: token\n});\n\nreturn { secret: secret.base32, token, verified };"
+      },
+      "id": "efc93ef6-54d0-4c8d-819a-d79cd71c724c",
+      "name": "Code",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1700,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "functionCode": "const speakeasy = require('speakeasy');\n\n// Get input from the form\nconst { userId, twoFactorCode } = $input.all();\n\n// TODO: Retrieve the user's secret from your database\n// This is a placeholder. Replace with actual database lookup.\nconst userSecret = getUserSecretFromDatabase(userId);\n\nif (!userSecret) {\n  return { success: false, message: 'User not found' };\n}\n\nconst verified = speakeasy.totp.verify({\n  secret: userSecret,\n  encoding: 'base32',\n  token: twoFactorCode,\n  window: 1\n});\n\nreturn { success: verified, userId };\n\n// Placeholder function - replace with actual database query\nfunction getUserSecretFromDatabase(userId) {\n  // This should be replaced with an actual database query\n  const mockDatabase = {\n    'user123': 'JBSWY3DPEHPK3PXP'\n  };\n  return mockDatabase[userId];\n}"
+      },
+      "name": "Verify 2FA",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        1360,
+        680
+      ],
+      "id": "a9b727b8-4354-4532-b340-cd8bbb085c24"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{$node[\"Verify 2FA\"].json[\"success\"]}}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "name": "IF",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        1580,
+        680
+      ],
+      "id": "8e7aaa43-2878-406e-8093-5b1eca437ba7"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "name": "Success Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        1800,
+        580
+      ],
+      "id": "2528f035-2c25-4025-a0d0-a60ad6cb7e89"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "name": "Failure Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        1800,
+        780
+      ],
+      "id": "bd69c4ae-7790-41ca-9deb-e0ccc5a251f4"
+    },
+    {
+      "parameters": {
+        "path": "67fc635b-4001-44bd-acd6-a636a62d3e36",
+        "formTitle": "2fa",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "User ID",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Enter your 2FA code",
+              "requiredField": true
+            }
+          ]
+        },
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "eb553f25-91b0-429d-9d2f-4ec07b27feab",
+      "name": "n8n Form Trigger",
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.1,
+      "position": [
+        1120,
+        680
+      ],
+      "webhookId": "67fc635b-4001-44bd-acd6-a636a62d3e36",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "operation": "verify",
+        "token": "={{ $json.query.jwtToken }}",
+        "options": {}
+      },
+      "id": "49a86a48-a89e-4da9-a7b5-a9dac27e6e9f",
+      "name": "verify JWT",
+      "type": "n8n-nodes-base.jwt",
+      "typeVersion": 1,
+      "position": [
+        400,
+        1020
+      ],
+      "credentials": {
+        "jwtAuth": {
+          "id": "2Glwu1MtS6PnFXXD",
+          "name": "JWT Auth account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "respondWith": "redirect",
+        "redirectURL": "https://app.n8n.cloud/login",
+        "options": {}
+      },
+      "id": "8f6c12f9-6aa3-47dc-89a7-79101ab981e7",
+      "name": "redirect to login page",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        620,
+        1200
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "redirect",
+        "redirectURL": "={{ $execution.resumeFormUrl }}",
+        "options": {}
+      },
+      "id": "b8db2c5f-9971-45e1-b536-f4aabf3044da",
+      "name": "redirect to form",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        660,
+        1000
+      ]
+    },
+    {
+      "parameters": {
+        "resume": "form",
+        "formTitle": "test",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Name"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "412c9be3-cdc7-4b62-b57a-5304c184f15a",
+      "name": "secured form",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        960,
+        1000
+      ],
+      "webhookId": "af7cce24-18b8-47e5-83e0-1961002ae684"
+    },
+    {
+      "parameters": {
+        "content": "Call the webhook endpoint with a query param with the jwt token, e.g.\n\n\nhttp://localhost:5678/webhook/securedform?jwtToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.55h17taK_Sz00vt0ipRcQ5OtHdWc3MKY-j7aLZFDY8U",
+        "height": 140.8537131652899,
+        "width": 501.66267349496314
+      },
+      "id": "570d1974-a8eb-41dd-b0cf-217479221fd3",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        40,
+        860
+      ]
+    },
+    {
+      "parameters": {
+        "path": "securedform",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "0bbe080e-e039-467c-82f5-6e714d8c1b2f",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        40,
+        1020
+      ],
+      "webhookId": "03969da9-ab9d-4a1e-8f15-daf2ca46cb9e"
+    }
+  ],
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verify 2FA": {
+      "main": [
+        [
+          {
+            "node": "IF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF": {
+      "main": [
+        [
+          {
+            "node": "Success Response",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Failure Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "n8n Form Trigger": {
+      "main": [
+        [
+          {
+            "node": "Verify 2FA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "verify JWT": {
+      "main": [
+        [
+          {
+            "node": "redirect to form",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "redirect to login page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "redirect to form": {
+      "main": [
+        [
+          {
+            "node": "secured form",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "verify JWT",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "triggerCount": 1,
+  "versionId": "7a6718d3-a1c6-42e3-9868-1824e68e1e31",
+  "owner": {
+    "type": "personal",
+    "personalEmail": "mandip@n8n.io"
+  }
+}

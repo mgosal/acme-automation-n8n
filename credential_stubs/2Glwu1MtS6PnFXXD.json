@@ -1,0 +1,12 @@
+{
+  "id": "2Glwu1MtS6PnFXXD",
+  "name": "JWT Auth account",
+  "type": "jwtAuth",
+  "data": {
+    "secret": ""
+  },
+  "ownedBy": {
+    "type": "personal",
+    "personalEmail": "mandip@n8n.io"
+  }
+}

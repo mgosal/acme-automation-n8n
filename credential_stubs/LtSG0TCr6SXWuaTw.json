@@ -1,0 +1,14 @@
+{
+  "id": "LtSG0TCr6SXWuaTw",
+  "name": "Unnamed credential",
+  "type": "httpBasicAuth",
+  "data": {
+    "user": "",
+    "password": ""
+  },
+  "ownedBy": {
+    "type": "team",
+    "teamId": "7KQPZmuLDnKgOrJQ",
+    "teamName": "DEMO"
+  }
+}

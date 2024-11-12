@@ -1,0 +1,508 @@
+{
+  "id": "DCSuFoJNonlBzd7m",
+  "name": "rag with qdrant copy (quiet prof with Jerwin)",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "9ae3974d-b05a-4b77-b3a0-1adaa8e1bfc7",
+      "name": "When clicking ‘Test workflow’",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -80,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "ded0d38d-320b-4edf-82ab-4c5df486bde9",
+      "name": "Default Data Loader",
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1,
+      "position": [
+        1100,
+        600
+      ]
+    },
+    {
+      "parameters": {
+        "chunkSize": 300,
+        "chunkOverlap": 75
+      },
+      "id": "31692c15-53f5-491a-845f-5dadaa1052a5",
+      "name": "Token Splitter",
+      "type": "@n8n/n8n-nodes-langchain.textSplitterTokenSplitter",
+      "typeVersion": 1,
+      "position": [
+        1220,
+        760
+      ]
+    },
+    {
+      "parameters": {
+        "model": "mxbai-embed-large:latest"
+      },
+      "id": "e281b43c-98e1-4b8b-a5e1-9468a4d8c19a",
+      "name": "Embeddings Ollama",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOllama",
+      "typeVersion": 1,
+      "position": [
+        960,
+        600
+      ],
+      "credentials": {
+        "ollamaApi": {
+          "id": "s3LMboSMY1izVKva",
+          "name": "Ollama account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fileSelector": "/Users/mandip/Library/CloudStorage/GoogleDrive-mandip@n8n.io/Shared drives/🕹️ Solutions/N8n_Policies_20240904/*.pdf",
+        "options": {}
+      },
+      "id": "76fdcdfd-ad7e-4c2f-a70d-2819a11643af",
+      "name": "Read Files from Disk",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        300,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "5054f0eb-a726-4666-a081-7a3b2e8c7a59",
+      "name": "Loop Over Items",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        520,
+        400
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "49d0b7c4-2cfe-4bb8-a639-53cd4d3a4068",
+      "name": "No Operation, do nothing",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        880,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "options": {}
+      },
+      "id": "3efc4dd4-918e-4fbc-9eaf-d977853cd26f",
+      "name": "Extract from File",
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        780,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "model": "mxbai-embed-large:latest"
+      },
+      "id": "5f059bb3-5db5-4a43-be55-d8d40b17700d",
+      "name": "Embeddings Ollama1",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOllama",
+      "typeVersion": 1,
+      "position": [
+        1520,
+        600
+      ],
+      "credentials": {
+        "ollamaApi": {
+          "id": "s3LMboSMY1izVKva",
+          "name": "Ollama account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "qdrantCollection": {
+          "__rl": true,
+          "value": "test_collection3",
+          "mode": "list",
+          "cachedResultName": "test_collection3"
+        },
+        "options": {}
+      },
+      "id": "051a11cc-e017-4d6e-a06c-36bd4399b251",
+      "name": "Qdrant Vector Store",
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreQdrant",
+      "typeVersion": 1,
+      "position": [
+        1640,
+        420
+      ],
+      "credentials": {
+        "qdrantApi": {
+          "id": "FpPC6EZP5nji0Nal",
+          "name": "QdrantApi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "35fe261b-dc38-4a35-9fd1-16fd935fca80",
+      "name": "When chat message received",
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        1000,
+        60
+      ],
+      "webhookId": "f25b782b-9c58-40c5-8dc5-b4f733fbd947"
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 50
+      },
+      "id": "7e009c42-002d-4991-8694-46429c3c3b43",
+      "name": "Window Buffer Memory",
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.2,
+      "position": [
+        1620,
+        220
+      ]
+    },
+    {
+      "parameters": {
+        "name": "qdrant",
+        "description": "use this vector store to search for context that will help you answer the question"
+      },
+      "id": "fe4490fc-7c9f-4d1b-b8df-be1b8f6b43c2",
+      "name": "Vector Store Tool",
+      "type": "@n8n/n8n-nodes-langchain.toolVectorStore",
+      "typeVersion": 1,
+      "position": [
+        1800,
+        260
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "a315444c-0bb9-49c8-a8e9-ba92c949a013",
+      "name": "OpenAI Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        1520,
+        420
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "EVrMH4EStWLbJWly",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "qdrantCollection": {
+          "__rl": true,
+          "value": "test_collection3",
+          "mode": "list",
+          "cachedResultName": "test_collection3"
+        },
+        "options": {}
+      },
+      "id": "86396302-acad-4a39-92af-b970b63cf8e4",
+      "name": "Qdrant Vector Store1",
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreQdrant",
+      "typeVersion": 1,
+      "position": [
+        1020,
+        380
+      ],
+      "credentials": {
+        "qdrantApi": {
+          "id": "FpPC6EZP5nji0Nal",
+          "name": "QdrantApi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "d8766809-be0b-4737-9396-abb7d199c2e7",
+      "name": "Embeddings OpenAI",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1,
+      "position": [
+        1680,
+        840
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "EVrMH4EStWLbJWly",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "PUT",
+        "url": "http://localhost:6333/collections/test_collection3",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"vectors\": {\n    \"size\": 1024,\n    \"distance\": \"Dot\"\n  }\n}",
+        "options": {}
+      },
+      "id": "8ffaf808-118a-4971-a315-db80883a194f",
+      "name": "create qdrant collection",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        100,
+        560
+      ],
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=The question:\n {{ $json.chatInput }}",
+        "options": {
+          "systemMessage": "you are an n8n solutions engineer and you have been asked to provide answers by a prospects infosec team. use the qdtand tool to get context from company policy documents to help you answer question."
+        }
+      },
+      "id": "be97819b-9b88-4e3c-babb-1dac5df03235",
+      "name": "AI Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.6,
+      "position": [
+        1560,
+        60
+      ]
+    },
+    {
+      "parameters": {
+        "categories": {
+          "categories": [
+            {
+              "category": "time off"
+            },
+            {
+              "category": "ai"
+            }
+          ]
+        },
+        "options": {
+          "fallback": "other"
+        }
+      },
+      "id": "ffd2b6fe-d97c-450a-a257-9c79edd59dfe",
+      "name": "Text Classifier",
+      "type": "@n8n/n8n-nodes-langchain.textClassifier",
+      "typeVersion": 1,
+      "position": [
+        1180,
+        60
+      ]
+    }
+  ],
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Read Files from Disk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Qdrant Vector Store1",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Token Splitter": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Default Data Loader",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings Ollama": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Qdrant Vector Store1",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Files from Disk": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "Qdrant Vector Store1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings Ollama1": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Qdrant Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Qdrant Vector Store": {
+      "ai_vectorStore": [
+        [
+          {
+            "node": "Vector Store Tool",
+            "type": "ai_vectorStore",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Text Classifier",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Window Buffer Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Vector Store Tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Vector Store Tool",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Text Classifier",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Qdrant Vector Store1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "triggerCount": 0,
+  "versionId": "fa50598a-df15-48a0-a7a5-70238628569b",
+  "owner": {
+    "type": "team",
+    "teamId": "Cu4hotK7yZkWyMWd",
+    "teamName": "RFX"
+  }
+}

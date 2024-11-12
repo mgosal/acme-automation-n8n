@@ -1,0 +1,186 @@
+{
+  "id": "yc3zcd9Cn0gJFVGO",
+  "name": "Manual ingestion",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "f0df7d05-0030-4909-ab81-c7c8ba072ea7",
+        "formTitle": "RFX Manual info ingestion",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Text to add to vector store",
+              "fieldType": "textarea",
+              "requiredField": true
+            }
+          ]
+        },
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "adb3bac7-365d-4515-9159-9aa53b5501de",
+      "name": "n8n Form Trigger",
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.1,
+      "position": [
+        420,
+        280
+      ],
+      "webhookId": "f0df7d05-0030-4909-ab81-c7c8ba072ea7"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "8c2a8f0b-fa2a-4597-8201-f19517b13444",
+      "name": "Default Data Loader1",
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1,
+      "position": [
+        760,
+        500
+      ]
+    },
+    {
+      "parameters": {
+        "chunkSize": 300,
+        "chunkOverlap": 75
+      },
+      "id": "30c09f63-d185-45f6-bf00-950de5904a7d",
+      "name": "Token Splitter1",
+      "type": "@n8n/n8n-nodes-langchain.textSplitterTokenSplitter",
+      "typeVersion": 1,
+      "position": [
+        880,
+        660
+      ]
+    },
+    {
+      "parameters": {
+        "model": "mxbai-embed-large:latest"
+      },
+      "id": "2a2e8363-2e6a-40b2-ae75-3d389f165a7d",
+      "name": "Embeddings Ollama2",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOllama",
+      "typeVersion": 1,
+      "position": [
+        620,
+        500
+      ],
+      "credentials": {
+        "ollamaApi": {
+          "id": "s3LMboSMY1izVKva",
+          "name": "Ollama account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "qdrantCollection": {
+          "__rl": true,
+          "value": "test_collection3",
+          "mode": "list",
+          "cachedResultName": "test_collection3"
+        },
+        "options": {}
+      },
+      "id": "59f5b245-d96e-42c4-97b7-7964cafc3e09",
+      "name": "Qdrant Vector Store2",
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreQdrant",
+      "typeVersion": 1,
+      "position": [
+        680,
+        280
+      ],
+      "credentials": {
+        "qdrantApi": {
+          "id": "FpPC6EZP5nji0Nal",
+          "name": "QdrantApi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "redirect",
+        "redirectURL": "http://localhost:5678/form/f0df7d05-0030-4909-ab81-c7c8ba072ea7",
+        "options": {}
+      },
+      "id": "ba4fcdf3-3046-410d-b212-0c7c3f8c7dc3",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1060,
+        280
+      ]
+    }
+  ],
+  "connections": {
+    "n8n Form Trigger": {
+      "main": [
+        [
+          {
+            "node": "Qdrant Vector Store2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader1": {
+      "ai_document": [
+        [
+          {
+            "node": "Qdrant Vector Store2",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Token Splitter1": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Default Data Loader1",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings Ollama2": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Qdrant Vector Store2",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Qdrant Vector Store2": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "triggerCount": 2,
+  "versionId": "04552c89-dcb8-4381-b739-48233d3fc440",
+  "owner": {
+    "type": "team",
+    "teamId": "Cu4hotK7yZkWyMWd",
+    "teamName": "RFX"
+  }
+}

@@ -1,0 +1,106 @@
+{
+  "id": "i9FOeALTegtnzUxW",
+  "name": "generator",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "f27892c3-3621-4234-8459-2a5f94d3353b",
+      "name": "When clicking ‘Test workflow’",
+      "type": "n8n-nodes-base.manualTrigger",
+      "position": [
+        720,
+        320
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "jsCode": "const { X12Generator, X12Parser, X12TransactionMap } = require('node-x12')\n\n\n// Generate valid ASC X12 EDI from an object.\nconst jsen = {\n  \"header\": [\n    \"01\",\n    \"0000000000\",\n    \"01\",\n    \"ABCCO     \",\n    \"12\",\n    \"4405197800     \",\n    \"01\",\n    \"999999999      \",\n    \"111206\",\n    \"1719\",\n    \"-\",\n    \"00406\",\n    \"000000049\",\n    \"0\",\n    \"P\",\n    \">\"\n  ],\n  \"options\": {\n    \"segmentTerminator\": \"~\",\n    \"elementDelimiter\": \"*\",\n    \"endOfLine\": '\\n',\n    \"format\": true,\n    \"subElementDelimiter\": \">\"\n  },\n  \"functionalGroups\": [\n    {\n      \"header\": [\n        \"SH\",\n        \"4405197800\",\n        \"999999999\",\n        \"20111206\",\n        \"1045\",\n        \"49\",\n        \"X\",\n        \"004060\"\n      ],\n      \"transactions\": [\n        {\n          \"header\": [\"214\", \"0008\"],\n          \"segments\": [\n            {\n              \"tag\": \"B10\",\n              \"elements\": [\"14\", \"829716\", \"20111206\", \"142428\", \"0002\"]\n            },\n            {\n              \"tag\": \"L11\",\n              \"elements\": [\"1\", \"\", \"S\"]\n            },\n            /*{\n              \"tag\": \"TD1\",\n              \"elements\": [\"PCS\", \"2\", \"\", \"\", \"\", \"A3\", \"60.310\", \"LB\"]\n            },\n            {\n              \"tag\": \"TD5\",\n              \"elements\": [\"\", \"2\", \"XXXX\", \"\", \"XXXX\"]\n            },\n            {\n              \"tag\": \"REF\",\n              \"elements\": [\"BM\", \"999999-001\"]\n            },\n            {\n              \"tag\": \"REF\",\n              \"elements\": [\"CN\", \"5787970539\"]\n            },\n            {\n              \"tag\": \"DTM\",\n              \"elements\": [\"011\", \"20111206\"]\n            },*/\n            {\n              \"tag\": \"N1\",\n              \"elements\": [\"SH\", \"1 EDI SOURCE\"]\n            },\n            {\n              \"tag\": \"N3\",\n              \"elements\": [\"31875 SOLON RD\"]\n            },\n            {\n              \"tag\": \"N4\",\n              \"elements\": [\"SOLON\", \"OH\", \"44139\"]\n            },\n            {\n              \"tag\": \"N1\",\n              \"elements\": [\"OB\", \"XYZ RETAIL\"]\n            },\n            {\n              \"tag\": \"N3\",\n              \"elements\": [\"P O BOX 9999999\"]\n            },\n            {\n              \"tag\": \"N4\",\n              \"elements\": [\"ATLANTA\", \"GA\", \"31139-0020\", \"\", \"SN\", \"9999\"]\n            },\n            {\n              \"tag\": \"N1\",\n              \"elements\": [\"SF\", \"1 EDI SOURCE\"]\n            },\n            {\n              \"tag\": \"N3\",\n              \"elements\": [\"31875 SOLON ROAD\"]\n            },\n            {\n              \"tag\": \"N4\",\n              \"elements\": [\"SOLON\", \"OH\", \"44139\"]\n            },\n            {\n              \"tag\": \"LX\",\n              \"elements\": [\"1\"]\n            },\n            {\n              \"tag\": \"AT7\",\n              \"elements\": [\"D1\", \"NS\", \"\", \"\", \"\", \"20111205\", \"ET\",]\n            },\n            {\n              \"tag\": \"MS1\",\n              \"elements\": [\"New York\", \"NY\"]\n            },\n            {\n              \"tag\": \"MS2\",\n              \"elements\": [\"UPSN\", \"12345\"]\n            },\n            {\n              \"tag\": \"AT8\",\n              \"elements\": [\"UPSN\", \"12345\"]\n            }\n            /*,\n            {\n              \"tag\": \"SN1\",\n              \"elements\": [\"1\", \"24\", \"EA\"]\n            },\n            {\n              \"tag\": \"PO4\",\n              \"elements\": [\"1\", \"24\", \"EA\"]\n            },\n            {\n              \"tag\": \"PID\",\n              \"elements\": [\"F\", \"\", \"\", \"\", \"BLUE WIDGET\"]\n            },\n            {\n              \"tag\": \"HL\",\n              \"elements\": [\"4\", \"2\", \"I\"]\n            },\n            {\n              \"tag\": \"LIN\",\n              \"elements\": [\"2\", \"VP\", \"99887D\", \"UP\", \"999999311746\"]\n            },\n            {\n              \"tag\": \"SN1\",\n              \"elements\": [\"2\", \"6\", \"EA\"]\n            },\n            {\n              \"tag\": \"PO4\",\n              \"elements\": [\"1\", \"6\", \"EA\"]\n            },\n            {\n              \"tag\": \"PID\",\n              \"elements\": [\"F\", \"\", \"\", \"\", \"RED WIDGET\"]\n            },\n            {\n              \"tag\": \"CTT\",\n              \"elements\": [\"4\", \"30\"]\n            }*/\n          ]\n        }\n      ]\n    }\n  ]\n}\nconst generator = new X12Generator(jsen)\n$input.first().json.data = generator.toString();\n\nreturn $input.all();"
+      },
+      "id": "060d0bf4-980c-4a26-b8d2-10b173a9254e",
+      "name": "Code",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        940,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "toText",
+        "sourceProperty": "data",
+        "options": {}
+      },
+      "id": "f205cf43-7e7a-4bb4-8303-52bc2eb9c919",
+      "name": "Convert to File",
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        1160,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "=/Users/mandip/.n8n/test.txt",
+        "options": {}
+      },
+      "id": "9457c130-4c47-427e-a017-19864dce1e36",
+      "name": "Read/Write Files from Disk",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        1380,
+        320
+      ],
+      "disabled": true
+    }
+  ],
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "triggerCount": 0,
+  "versionId": "7a4c7056-598c-4955-80c9-d2858a844fdb",
+  "owner": {
+    "type": "team",
+    "teamId": "xCZpEBp41LVd8DY7",
+    "teamName": "EDI"
+  }
+}
