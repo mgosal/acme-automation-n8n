@@ -1,0 +1,14 @@
+{
+  "id": "OqXUBYiKiOItvMD1",
+  "name": "Grist account",
+  "type": "gristApi",
+  "data": {
+    "apiKey": "",
+    "planType": "",
+    "selfHostedUrl": ""
+  },
+  "ownedBy": {
+    "type": "personal",
+    "personalEmail": "mandip@n8n.io"
+  }
+}

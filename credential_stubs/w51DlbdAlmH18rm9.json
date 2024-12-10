@@ -1,0 +1,14 @@
+{
+  "id": "w51DlbdAlmH18rm9",
+  "name": "n8n localhost api account",
+  "type": "n8nApi",
+  "data": {
+    "apiKey": "",
+    "baseUrl": ""
+  },
+  "ownedBy": {
+    "type": "team",
+    "teamId": "G3rut5oL2k2FrEff",
+    "teamName": "🏝️sandbox"
+  }
+}

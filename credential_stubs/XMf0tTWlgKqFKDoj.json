@@ -1,0 +1,16 @@
+{
+  "id": "XMf0tTWlgKqFKDoj",
+  "name": "min.io S3 localhost",
+  "type": "s3",
+  "data": {
+    "endpoint": "",
+    "region": "",
+    "accessKeyId": "",
+    "secretAccessKey": "",
+    "ignoreSSLIssues": true
+  },
+  "ownedBy": {
+    "type": "personal",
+    "personalEmail": "mandip@n8n.io"
+  }
+}

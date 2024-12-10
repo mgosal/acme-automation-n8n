@@ -1,0 +1,12 @@
+{
+  "id": "qkk7jF55h1UTpVtx",
+  "name": "Google Sheets account",
+  "type": "googleSheetsOAuth2Api",
+  "data": {
+    "clientSecret": ""
+  },
+  "ownedBy": {
+    "type": "personal",
+    "personalEmail": "mandip@n8n.io"
+  }
+}

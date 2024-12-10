@@ -1,0 +1,12 @@
+{
+  "id": "cX8kWMTHFbtn0PaQ",
+  "name": "Groq account",
+  "type": "groqApi",
+  "data": {
+    "apiKey": ""
+  },
+  "ownedBy": {
+    "type": "personal",
+    "personalEmail": "mandip@n8n.io"
+  }
+}

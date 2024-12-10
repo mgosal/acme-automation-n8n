@@ -1,6 +1,6 @@
 {
   "id": "aWybWacNV9erLcXw",
-  "name": "Example",
+  "name": "EDI Example",
   "nodes": [
     {
       "parameters": {},
@@ -224,7 +224,7 @@
       "typeVersion": 1,
       "position": [
         1600,
-        14.492484742773343
+        20
       ]
     },
     {
@@ -968,7 +968,7 @@
     "executionOrder": "v1"
   },
   "triggerCount": 0,
-  "versionId": "c7293dcc-6393-4a7b-ab78-7a3f4506a60c",
+  "versionId": "9058087c-8164-4c90-aea5-ecc3829f04e6",
   "owner": {
     "type": "team",
     "teamId": "xCZpEBp41LVd8DY7",
