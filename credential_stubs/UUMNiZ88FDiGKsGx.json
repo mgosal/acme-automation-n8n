@@ -1,0 +1,12 @@
+{
+  "id": "UUMNiZ88FDiGKsGx",
+  "name": "Notion account",
+  "type": "notionApi",
+  "data": {
+    "apiKey": ""
+  },
+  "ownedBy": {
+    "type": "personal",
+    "personalEmail": "mandip@n8n.io"
+  }
+}

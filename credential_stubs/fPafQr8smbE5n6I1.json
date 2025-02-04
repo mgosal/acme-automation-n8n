@@ -1,0 +1,11 @@
+{
+  "id": "fPafQr8smbE5n6I1",
+  "name": "Redis account",
+  "type": "redis",
+  "data": {},
+  "ownedBy": {
+    "type": "team",
+    "teamId": "LIGp9ml9heTyKmkT",
+    "teamName": "Ai (perplexity api)"
+  }
+}

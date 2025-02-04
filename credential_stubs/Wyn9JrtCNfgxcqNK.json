@@ -1,0 +1,13 @@
+{
+  "id": "Wyn9JrtCNfgxcqNK",
+  "name": "Miro account",
+  "type": "miroOAuth2Api",
+  "data": {
+    "clientId": "",
+    "clientSecret": ""
+  },
+  "ownedBy": {
+    "type": "personal",
+    "personalEmail": "mandip@n8n.io"
+  }
+}

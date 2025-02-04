@@ -4,5 +4,11 @@
     "key": "sftpLock",
     "type": "string",
     "value": ""
+  },
+  {
+    "id": "QANmxRuoW5f7EtFA",
+    "key": "cust1",
+    "type": "string",
+    "value": ""
   }
 ]
