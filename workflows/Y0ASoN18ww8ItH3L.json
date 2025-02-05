@@ -1,0 +1,69 @@
+{
+  "id": "Y0ASoN18ww8ItH3L",
+  "name": "Cust1-variables",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "4c2a6c95-bdc0-49e2-80e1-140e65818445",
+      "name": "Execute Workflow Trigger"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ddbc1fdf-ded2-4613-a471-185713dd74ae",
+              "name": "var1",
+              "value": "123",
+              "type": "string"
+            },
+            {
+              "id": "d23865d0-e30a-4c94-9f8e-afb6f832e6c3",
+              "name": "var3",
+              "value": "321",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        220,
+        0
+      ],
+      "id": "88a65e0a-bbb7-46ff-94a4-98076fdfbc55",
+      "name": "Edit Fields"
+    }
+  ],
+  "connections": {
+    "Execute Workflow Trigger": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "triggerCount": 0,
+  "versionId": "8bedafdc-4d88-46ed-89bc-86602c3e98cd",
+  "owner": {
+    "type": "team",
+    "teamId": "osYm7YnpGaSHpFIO",
+    "teamName": "cust1"
+  }
+}
